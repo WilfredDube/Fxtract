@@ -22,7 +22,7 @@ class Computation {
 
     foreach ( $this->loop as $edge ) {
       //echo "edge1 : ".var_dump($edge1->Start_Vertex);
-      echo "edge : ".var_dump($edge);
+      // echo "edge : ".var_dump($edge1->Start_Vertex);
       if ($edge1 == $edge)
       continue;
 
@@ -31,7 +31,7 @@ class Computation {
           $edge1->Start_Vertex == $edge->Terminate_Vertex ||
           $edge1->Terminate_Vertex == $edge->Start_Vertex)
       {
-        echo "ewefwew";
+      //  echo "ewefwew";
         $edge2 = $edge;
         break;
       }
@@ -43,9 +43,9 @@ class Computation {
 
     //var_dump($edge2);//1->Edge_List);
     $a = $this->computeLineVector ( $edge1 );
-  //$b = $this->computeLineVector ( $edge2 );
+    $b = $this->computeLineVector ( $edge2 );
 
-    // return $this->computeCrossProduct ( $a, $b );
+    return $this->computeCrossProduct ( $a, $b );
   }
 
   private function computeLineVector($line) {
