@@ -106,7 +106,7 @@ class Bend {
             $bendLength = $fx->computeBendLength ( $bendE );
             $angle = $fx->computeAngle ( $face1->External_Loop->Normal, $face2->External_Loop->Normal );
             // echo "TEST:".(2. * 4.);
-            echo "<br/>Angle = ".round($angle)." Degrees<br/><br/>\n";
+            // echo "<br/>Angle = ".round($angle)." Degrees<br/><br/>\n";
             $i = 0;
             // dsdsdnnskdnknsndvnekjnjfsd";
             // print_r($bendE); echo "<br/>Length = ".$bendLength;

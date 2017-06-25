@@ -49,9 +49,11 @@ $bends = new Bend();
 $bendz = $bends->bendTract($loops->getLoops());
 
 //var_dump($bendz);
-$bends->displaybends($bendz);
+// $bends->displaybends($bendz);
 
-
+$x = new Extract();
+$dim = $x->getDimensions($gsection);
+echo "$dim\n\n";
 
 // foreach ($edgelist as $value) {
 // var_dump($value->Edge_List);
