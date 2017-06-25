@@ -18,6 +18,7 @@ class Loop {
 
   // Extract loops
   public function looptract($dsection, $psection, $edge) {
+  public function looptract($dsection, $psection, $edge, $vertexlist) {
     global $xtract;
     //$xt = new Extract ();
     //$this->edgetract ();
@@ -94,10 +95,14 @@ class Loop {
         $p ++;
       }
     }
+
+    self::$face = new Face();
+    $rbsurface = self::$face->facetract($dsection, $psection, $this->loops, $vertexlist, $edge->getEdgeList());
+
   }
 
   public function getLoops() {
-    return $this;
+    return self::$face->getFaceList();
   }
 }
 ?>
