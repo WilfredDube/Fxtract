@@ -13,7 +13,9 @@ class RBSplineSurface {
   public $Control_Points; //
   public $Control_Pend;
 
-  public function RBSplineSurface($surface) {
+  public function RBSplineSurfaceTract($surface) {
+    global $xtract;
+
   		$counter = 1;
 
   		// echo count($dsection);
@@ -26,7 +28,7 @@ class RBSplineSurface {
   				$pentry = $surface; // [$value->PointerData];
   				                    // echo $pentry."<br/><br/>";
 
-  				$arr = $this->multiexplode ( array (
+  				$arr = $xtract->multiexplode ( array (
   						",",
   						";"
   				), $pentry );
