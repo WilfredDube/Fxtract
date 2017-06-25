@@ -2,7 +2,7 @@
 
 require_once ('./includes/initialize.php');
 
-$iges_file = '90.igs';
+$iges_file = 'test.igs';
 
 $parser = new Parser(FILE_REPOSITORY.$iges_file);
 $total = $parser->count_dline();
@@ -43,7 +43,14 @@ $edgelist = $edge->edgetract($dsection, $psection, $edgetype, $vt);
 
 //($edge->getEdgeList());
 $loops = new Loop();
-$loops->looptract($dsection, $psection, $edge);
+$loops->looptract($dsection, $psection, $edge, $vtlist);
+
+$bends = new Bend();
+$bendz = $bends->bendTract($loops->getLoops());
+
+var_dump($bendz);
+
+
 
 // foreach ($edgelist as $value) {
 // var_dump($value->Edge_List);
