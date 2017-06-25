@@ -48,7 +48,8 @@ $loops->looptract($dsection, $psection, $edge, $vtlist);
 $bends = new Bend();
 $bendz = $bends->bendTract($loops->getLoops());
 
-var_dump($bendz);
+//var_dump($bendz);
+$bends->displaybends($bendz);
 
 
 
