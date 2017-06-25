@@ -11,13 +11,14 @@ class Loop {
   public $Face_Pointers;
   public $loops;
 
+  static $face;
+
   function __construct() {
     $this->Edge_List = array();
     $this->loops = array();
   }
 
   // Extract loops
-  public function looptract($dsection, $psection, $edge) {
   public function looptract($dsection, $psection, $edge, $vertexlist) {
     global $xtract;
     //$xt = new Extract ();
@@ -86,8 +87,8 @@ class Loop {
           $this->loops [$value->PointerData]->Loop_Type = "FACE";
           //var_dump($edge->getEdgeList());
           // var_dump($this->loops [$value->PointerData]->Edge_List);
-          $fx = new Computation ( $this->loops [$value->PointerData]->Edge_List );
-          $this->loops [$value->PointerData]->Normal = $fx->computeNormal ();
+          $fx = new Computation ( );
+          $this->loops [$value->PointerData]->Normal = $fx->computeNormal ($this->loops [$value->PointerData]->Edge_List );
           // var_dump($this->loops [$value->PointerData]->Normal);
         } else
         $this->loops [$value->PointerData]->Normal = "bend";
