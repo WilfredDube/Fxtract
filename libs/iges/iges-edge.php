@@ -41,6 +41,7 @@ class Edge {
         ), $pentry );
 
         for($j = 2, $id = 1; $j < count ( $arr ); $j ++, $id ++) {
+          $edg = new Edge();
 
           if (($j + 1) >= count ( $arr ) && ($j + 2) >= count ( $arr )) {
             break;
