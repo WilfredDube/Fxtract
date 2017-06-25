@@ -160,6 +160,7 @@ class Bend {
   }
 
   public function insertBendFeatures($Bends, $gsection) {
+    $fx = new Computation ();
     if (isset ( $Bends )) {
       foreach ( $Bends as $bend ) {
         $thick = 0.5;
@@ -185,7 +186,7 @@ class Bend {
         ;
         $TS = $row ['tensile_strength'];
 
-        $force = $this->fx->computeBendingForce ( $this->Bend_Length, $thick, $unit, $TS );
+        $force = $fx->computeBendingForce ( $this->Bend_Length, $thick, $unit, $TS );
 
         $id = $_SESSION ['fileid'] . "" . $this->Bend_ID . "" . $this->Bend_Loop;
         try { // echo "dsds";
