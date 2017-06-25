@@ -10,12 +10,19 @@ class Face {
   var $Internal_Loop_Count;
   var $Internal_Loop; // ARRAY
 
+  static $face_list;
+  static $shell;
+  static $surface;
+
 	function __construct() {
+    self::$face_list = array();
 		$this->Internal_Loop = array();
-		$shell = new $Shell();
+		self::$shell = new Shell();
+    self::$surface = new RBSplineSurface();
 	}
 
-  public function facetract($dsection, $psection, $loops, $face_list) {
+  public function facetract($dsection, $psection, $loops, $vertexlist, $edgeList) {
+    global $xtract;
     $counter = 0;
     $bend = 0;
     $nfaces = 0;
@@ -29,7 +36,7 @@ class Face {
 
         $pentry = $psection [$value->PointerData];
 
-        $arr = $this->multiexplode ( array (
+        $arr = $xtract->multiexplode ( array (
           ",",
           ";"
         ), $pentry );
@@ -41,41 +48,50 @@ class Face {
         $pLoop = $arr [4];
 
         $index = $dsection [$pSurf]->PointerData;
-        $ret = $this->RBSplineSurface ( $psection [$index] );
-
+        $ret = self::$surface->RBSplineSurfaceTract( $psection [$index] );
+        // var_dump($ret);
         $ppentry_ploop = $dsection [$pLoop]->PointerData;
 
         $counter ++;
         if (($ret->PROP3) == 1) {
+          //echo "ddd  ";
           if ($loops [$ppentry_ploop]->Loop_Type != "BEND") {
-            $this->Surface_Type = "Plane Surface";
-            $this->Face_ID = $counter;
-            $this->Bend_ID = - 1;
+            $face->Surface_Type = "Plane Surface";
+            $face->Face_ID = $counter;
+            $face->Bend_ID = - 1;
             $nfaces ++;
           } else {
-            $this->Surface_Type = "Edge Side";
-            $this->Face_ID = $counter;
-            $this->Bend_ID = - 1;
+            $face->Surface_Type = "Edge Side";
+            $face->Face_ID = $counter;
+            $face->Bend_ID = - 1;
             $nfaces ++;
           }
         } else {
           $bend ++;
-          $this->Surface_Type = "Curved Surface";
-          $this->Face_ID = - 1;
-          $this->Bend_ID = $bend;
+          $face->Surface_Type = "Curved Surface";
+          $face->Face_ID = - 1;
+          $face->Bend_ID = $bend;
         }
 
-        $this->External_Loop = $loops [$ppentry_ploop];
-        $face_list [$counter] = new Face ();
-        $face_list [$counter] = $face;
+        //var_dump($face);
+        $face->External_Loop = $loops [$ppentry_ploop];
+        self::$face_list [$counter] = new Face ();
+        self::$face_list [$counter] = $face;
+        $_SESSION['facelist'][$counter] = self::$face_list[$counter];
       }
     }
 
-    if (isset ( $face_list ))
-    ;
+    if (isset ( self::$face_list ))
+    ;// ;echo "string";;
 
-    $Shell->createShell ();
+    self::$shell->createShell($vertexlist, $edgeList, $loops, self::$face_list);
   }
 
+  public function getFaceList() {
+    // var_dump($_SESSION['facelist']);
+  return $_SESSION['facelist'];
+  }
 }
+
+
 ?>
