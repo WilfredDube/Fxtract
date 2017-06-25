@@ -41,13 +41,15 @@ $edgetype = $rbspline->rbsplineCurveTract($dsection, $psection);//, $edgetype);
 $edge = new Edge();
 $edgelist = $edge->edgetract($dsection, $psection, $edgetype, $vt);
 
-//var_dump($edge->getEdge504());
+//($edge->getEdgeList());
 $loops = new Loop();
 $loops->looptract($dsection, $psection, $edge);
 
-// foreach ($edgelist as $key => $value) {
-// var_dump($value->Edge_List->Start_Vertex);
+// foreach ($edgelist as $value) {
+// var_dump($value->Edge_List);
 // }
+
+//var_dump($_SESSION ['edgelist'][1]->Edge_List);
 
 //var_dump($rbspline);
 //var_dump($edgetype);

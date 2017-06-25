@@ -19,7 +19,7 @@ class Loop {
   // Extract loops
   public function looptract($dsection, $psection, $edge) {
     global $xtract;
-    $xt = new Extract ();
+    //$xt = new Extract ();
     //$this->edgetract ();
     static $p = 1;
 
@@ -35,6 +35,7 @@ class Loop {
         ), $pentry );
 
         $edge504 = ($edge->getEdge504 ());
+        // var_dump($edge504);
         $Edge_List = array ();
 
         $edgetuple = $arr [1];
@@ -83,9 +84,10 @@ class Loop {
         if ($this->loops [$value->PointerData]->Loop_Type != "BEND" || $this->loops [$value->PointerData]->Loop_Type == null) {
           $this->loops [$value->PointerData]->Loop_Type = "FACE";
           //var_dump($edge->getEdgeList());
-          //var_dump($this->loops [$value->PointerData]->Edge_List);
+          // var_dump($this->loops [$value->PointerData]->Edge_List);
           $fx = new Computation ( $this->loops [$value->PointerData]->Edge_List );
           $this->loops [$value->PointerData]->Normal = $fx->computeNormal ();
+          // var_dump($this->loops [$value->PointerData]->Normal);
         } else
         $this->loops [$value->PointerData]->Normal = "bend";
 
