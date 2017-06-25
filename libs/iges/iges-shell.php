@@ -16,7 +16,7 @@ class Shell {
     $Face_List = array();
   }
 
-  public function createShell($vertexlist, $edgeList, $loops, $face_list) {
+  public function createShell($vertexlist, $edgelist, $loops, $face_list) {
 		$this->Vertex_List = $vertexlist;
 		$this->Edge_List = $edgelist;
 		$this->Loop_List = $loops;
