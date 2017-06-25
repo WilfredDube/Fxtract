@@ -1,5 +1,6 @@
 <?php
 //require_once('../iges/iges-parameter.php');
+//session_start();
 
 class Edge {
 
@@ -11,7 +12,7 @@ class Edge {
   //public $Face_Pointer; // ARRAY
   //public $Loop_Pointer; // ARRAY
   //public $Dimension;
-  public $edge504;
+  public static $edge504;
   private static $edgelist;
 
   function __construct () {
@@ -27,7 +28,7 @@ class Edge {
 
     $vertexlist = $vertex->getVertexList();
 
-    //var_dump($vertexlist[1]->Vertex);
+    //var_dump($vertexlist[15]->Vertex);
 
     if ($dsection != null)
     foreach ( $dsection as $value ) {
@@ -51,29 +52,34 @@ class Edge {
           $pointer = trim ( $arr [$j] );
           $sindex = trim ( $arr [$j + 2] );
           $tindex = trim ( $arr [$j + 4] );
-
           //echo $tindex."<br/>";
 
-          $this->Edge_ID = $id;
+          $edg->Edge_ID = $id;
 
           if ($edgetype [$dsection [$pointer]->PointerData]->PROP3 == 1)
-          $this->Edge_Type = "Line";
+          $edg->Edge_Type = "Line";
           else
-          $this->Edge_Type = "Arc";
+          $edg->Edge_Type = "Arc";
 
-          $this->Start_Vertex = new Vertex ();
-          $this->Start_Vertex = $vertexlist [$sindex]->Vertex;
-          $this->Terminate_Vertex = new Vertex ();
-          $this->Terminate_Vertex = $vertexlist [$tindex]->Vertex;
+          $edg->Start_Vertex = new Vertex ();
+          $edg->Start_Vertex = $vertexlist [$sindex]->Vertex;
+          //var_dump($vertexlist [$tindex]->Vertex);
+          $edg->Terminate_Vertex = new Vertex ();
+          $edg->Terminate_Vertex = $vertexlist [$tindex]->Vertex;
 
-          //  var_dump($this);
+          //var_dump($edg);
           self::$edgelist [$id] = new EdgeList ();
           self::$edgelist [$id]->Edge_Count = trim ( $arr [1] );
           self::$edgelist [$id]->Edge_List = array ();
           //self::$edgelist [$id]->Edge_List = new Edge ();
-          self::$edgelist [$id]->Edge_List = $this;
+          self::$edgelist [$id]->Edge_List = $edg;
 
-          //var_dump(self::$edgelist [$id]->Edge_List);
+          // echo "$id\n";
+          $_SESSION ['edgelist'][$id] = self::$edgelist[$id];
+          //var_dump($_SESSION ['edgelist'] [19]->Edge_List);
+          //var_dump($vertexlist [$tindex]->Vertex);
+          // if (self::$edgelist [$id]->Edge_List->Edge_ID == 20)
+          //var_dump(self::$edgelist [$id]);
 
           $j = $j + 4;
 
@@ -92,28 +98,38 @@ class Edge {
             $v1->z = $edt->Control_Points [$c - 1];
           }
         }
+
+
       }
 
       if ($value->EntityType == 504) {
-        $this->edge504 [$value->LineNumber] = new EdgeList ();
-        $this->edge504 [$value->LineNumber] = self::$edgelist;
+        self::$edge504 [$value->LineNumber] = new EdgeList ();
+        self::$edge504 [$value->LineNumber] = $_SESSION ['edgelist'];
+        $_SESSION ['edge504'] = self::$edge504;
+        // var_dump(self::$edge504[$value->LineNumber]);
       }
     }
 
-    //var_dump(self::$edgelist[1]->Edge_List);
-    return self::$edgelist;
+  //   for($id = 1; $id <= count(self::$edgelist); $id ++){
+  //   //if (self::$edgelist [$id]->Edge_List->Edge_ID == 20)
+  //   var_dump(self::$edgelist [$id]);//->Edge_List);
+  //   //echo "string";
+  // }
+    //var_dump($_SESSION ['edgelist']);
+    //var_dump($edg);
+    //$_SESSION ['edgelist'] = self::$edgelist;
+    // var_dump($_SESSION ['edgelist']);
+
+    return $_SESSION ['edgelist'];
   }
 
   public function getEdge504() {
-    return $this->edge504;
+    return $_SESSION ['edge504'];
   }
 
 
   public function getEdgeList() {
-  //for($id = 1; $id <= count(self::$edgelist); $id ++)
-    //var_dump(self::$edgelist);//[$id]->Vertex);
-
-    return self::$edgelist;
+    return $_SESSION ['edgelist'];
   }
 }
 // $edge = new Edge();
