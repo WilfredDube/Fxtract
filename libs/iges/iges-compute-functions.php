@@ -6,16 +6,17 @@ class Computation {
 
   private $loop;
 
-  function __construct($edgelist) {
-    $this->loop = $edgelist;
+  function __construct() {
+
     //$x = new Edge();
     //var_dump($x->getEdgeList());
 
     //var_dump($this->loop);
   }
 
-  public function computeNormal()
+  public function computeNormal($edgelist)
   {
+    $this->loop = $edgelist;
     reset ( $this->loop );
     $edge1 = $this->loop [key ( $this->loop )];
     $edge2 = null;
@@ -225,4 +226,5 @@ class Computation {
   }
 }
 
+$compute = new Computation();
 ?>
