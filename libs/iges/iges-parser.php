@@ -1,8 +1,5 @@
 <?php
-//include ('classes/entity.php');
-//include ('classes/Params.php');
 
-// ini_set('display_errors','on');
 class Parser {
   private $_file;
   private $entity;

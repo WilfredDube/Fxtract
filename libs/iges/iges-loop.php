@@ -21,15 +21,12 @@ class Loop {
   // Extract loops
   public function looptract($dsection, $psection, $edge, $vertexlist) {
     global $xtract;
-    //$xt = new Extract ();
-    //$this->edgetract ();
     static $p = 1;
 
     foreach ( $dsection as $value ) {
       if ($value->EntityType == 508) // && $set == false)
       {
         $pentry = $psection [$value->PointerData];
-        // echo $pentry."<br/>";
 
         $arr = $xtract->multiexplode ( array (
           ",",
@@ -37,13 +34,12 @@ class Loop {
         ), $pentry );
 
         $edge504 = ($edge->getEdge504 ());
-        // var_dump($edge504);
         $Edge_List = array ();
 
         $edgetuple = $arr [1];
 
-        for($j = 2, $id = 1; $j < count ( $arr ); $j ++, $id ++) {
-
+        for($j = 2, $id = 1; $j < count ( $arr ); $j ++, $id ++)
+        {
           if (($j + 1) >= count ( $arr ) && ($j + 2) >= count ( $arr )) {
             break;
           }
@@ -70,13 +66,10 @@ class Loop {
         $this->loops [$value->PointerData]->Loop_ID = $p;
         $this->loops [$value->PointerData]->Loop_Type = null;
 
-        //var_dump($Edge_List);
-
         foreach ( $Edge_List as $edl ) {
           $i = 1;
           if ($edl->Edge_Type == "Arc") {
             $this->loops [$value->PointerData]->Loop_Type = "BEND";
-            // echo "Bend";
             break;
           }
 
@@ -85,11 +78,8 @@ class Loop {
 
         if ($this->loops [$value->PointerData]->Loop_Type != "BEND" || $this->loops [$value->PointerData]->Loop_Type == null) {
           $this->loops [$value->PointerData]->Loop_Type = "FACE";
-          //var_dump($edge->getEdgeList());
-          // var_dump($this->loops [$value->PointerData]->Edge_List);
           $fx = new Computation ( );
           $this->loops [$value->PointerData]->Normal = $fx->computeNormal ($this->loops [$value->PointerData]->Edge_List );
-          // var_dump($this->loops [$value->PointerData]->Normal);
         } else
         $this->loops [$value->PointerData]->Normal = "bend";
 
@@ -106,4 +96,5 @@ class Loop {
     return self::$face->getFaceList();
   }
 }
+
 ?>

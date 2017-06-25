@@ -14,12 +14,12 @@ class Face {
   static $shell;
   static $surface;
 
-	function __construct() {
+  function __construct() {
     self::$face_list = array();
-		$this->Internal_Loop = array();
-		self::$shell = new Shell();
+    $this->Internal_Loop = array();
+    self::$shell = new Shell();
     self::$surface = new RBSplineSurface();
-	}
+  }
 
   public function facetract($dsection, $psection, $loops, $vertexlist, $edgeList) {
     global $xtract;
@@ -30,7 +30,8 @@ class Face {
     static $p = 1;
     $f = 1;
 
-    foreach ( $dsection as $value ) {
+    foreach ( $dsection as $value )
+    {
       if ($value->EntityType == 510)
       {
 
@@ -54,7 +55,6 @@ class Face {
 
         $counter ++;
         if (($ret->PROP3) == 1) {
-          //echo "ddd  ";
           if ($loops [$ppentry_ploop]->Loop_Type != "BEND") {
             $face->Surface_Type = "Plane Surface";
             $face->Face_ID = $counter;
@@ -73,7 +73,6 @@ class Face {
           $face->Bend_ID = $bend;
         }
 
-        //var_dump($face);
         $face->External_Loop = $loops [$ppentry_ploop];
         self::$face_list [$counter] = new Face ();
         self::$face_list [$counter] = $face;
@@ -82,14 +81,13 @@ class Face {
     }
 
     if (isset ( self::$face_list ))
-    ;// ;echo "string";;
+    ;
 
     self::$shell->createShell($vertexlist, $edgeList, $loops, self::$face_list);
   }
 
   public function getFaceList() {
-    // var_dump($_SESSION['facelist']);
-  return $_SESSION['facelist'];
+    return $_SESSION['facelist'];
   }
 }
 

@@ -1,17 +1,11 @@
 <?php
-// ini_set('display_errors','on');
-//require ('../../includes/config.php');
 
 class Computation {
 
   private $loop;
 
   function __construct() {
-
-    //$x = new Edge();
-    //var_dump($x->getEdgeList());
-
-    //var_dump($this->loop);
+    ;
   }
 
   public function computeNormal($edgelist)
@@ -21,28 +15,22 @@ class Computation {
     $edge1 = $this->loop [key ( $this->loop )];
     $edge2 = null;
 
-    foreach ( $this->loop as $edge ) {
-      //echo "edge1 : ".var_dump($edge1->Start_Vertex);
-      // echo "edge : ".var_dump($edge1->Start_Vertex);
+    foreach ( $this->loop as $edge )
+    {
       if ($edge1 == $edge)
       continue;
 
       if ($edge1->Start_Vertex == $edge->Start_Vertex ||
-          $edge1->Terminate_Vertex == $edge->Terminate_Vertex ||
-          $edge1->Start_Vertex == $edge->Terminate_Vertex ||
-          $edge1->Terminate_Vertex == $edge->Start_Vertex)
+      $edge1->Terminate_Vertex == $edge->Terminate_Vertex ||
+      $edge1->Start_Vertex == $edge->Terminate_Vertex ||
+      $edge1->Terminate_Vertex == $edge->Start_Vertex)
       {
-      //  echo "ewefwew";
+
         $edge2 = $edge;
         break;
       }
-      //}
-      //   $edge2 = $edge;
-      //   break;
-      // }
     }
 
-    //var_dump($edge2);//1->Edge_List);
     $a = $this->computeLineVector ( $edge1 );
     $b = $this->computeLineVector ( $edge2 );
 
@@ -84,7 +72,6 @@ class Computation {
     $B = $vector->y * $vector->y;
     $C = $vector->z * $vector->z;
 
-    // echo "Modulus : ".sqrt($A + $B + $C)."..";
     return sqrt ( $A + $B + $C );
   }
 

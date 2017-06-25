@@ -71,7 +71,7 @@ class Extract {
 
     return $kn;
   }
-
+}
 $xtract = new Extract();
 
 //var_dump($xtract);

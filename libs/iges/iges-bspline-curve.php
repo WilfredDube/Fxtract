@@ -22,12 +22,11 @@ class RBSplineCurve {
   public function rbsplineCurveTract($dsection = null, $psection = null) {
     global $xtract;
     $counter = 0;
-    //$edgetype = array();
 
     if ($dsection != null)
     foreach ( $dsection as $value ) {
 
-      if ($value->EntityType == 126) // && $set == false)
+      if ($value->EntityType == 126)
       {
         $id = $value->PointerData;
         $pentry = $psection [$id];
@@ -109,7 +108,6 @@ class RBSplineCurve {
 
           $this->Control_Pend = count ( $this->Control_Points );
 
-          //$edgetype [$id] = new EdgeType ();
           $edgetype [$id] = $this;
         }
       }
@@ -119,9 +117,4 @@ class RBSplineCurve {
   }
 }
 
-// $rbsp = new RBSplineCurve();
-// echo get_class($rbsp)."\n";
-//
-// $edtype = $rbsp->rbsplineCurveTract();
-// var_dump($edtype);
 ?>

@@ -1,6 +1,7 @@
 <?php
 
 class Bend {
+  
   public $Bend_ID;
   public $Face1;
   public $Face2;
@@ -23,138 +24,64 @@ class Bend {
     $loops = $face_list;
     $faces = $face_list;
 
-    // /echo "dsd";
     $p = 0;
 
-    // var_dump($loops);
-    foreach ( $loops as $loop ) {
-      /* */
-      // if($loop->Surface_Type == "Curved Surface")
-      {
+    foreach ( $loops as $loop )
+    {
+      $face1 = null;
+      $face2 = null;
+      $bendE = null;
 
-        // echo "Face_ID = "; print_r($loop->Face_ID);
-        // echo "Bend_ID = "; print_r($loop->Bend_ID);
-        // echo "<br/>";
-        $face1 = null;
-        $face2 = null;
-        $bendE = null;
+      $i = 0;
+      foreach ( $loop->External_Loop->Edge_List as $bedl ) {
+        if ($bedl->Edge_Type == "Line" && $loop->Bend_ID != - 1) {
 
-        // if (strcmp($loop->Surface_Type, "Plane Surface") == 0)
-        // echo $loop->Surface_Type;
+          $i ++;
 
-        $i = 0;
-        foreach ( $loop->External_Loop->Edge_List as $bedl ) {
-          // echo $bedl->Edge_Type." ";
-          if ($bedl->Edge_Type == "Line" && $loop->Bend_ID != - 1) {
+          $bendE = $bedl;
 
-            $i ++;
-            // echo $i." => ".$bedl->Edge_Type." ";
-            $bendE = $bedl;
-            // echo $i." => ".$bedl->Edge_Type." +> Bend ID ".$loop->Bend_ID."<br/>";
-            // print_r($loop->External_Loop->Normal);
-
-            foreach ( $faces as $face ) {
-              // var_dump($face);
-              /*
-              * echo "Normal : ";
-              * print_r($face->External_Loop->Normal);
-              * echo "<br/>";
-              */
-              if ($face->Bend_ID == -1) {
-                foreach ( $face->External_Loop->Edge_List as $fedl )
-                if ($bendE == $fedl) {
-                  $flag = true;
-                  // echo "<br/>";
-                  // echo "Face ID ".$face->Face_ID."<br/>";
-                  if ($face1 == null)
-                  $face1 = $face;
-                  else
-                  $face2 = $face;
-                  // print_r($face->External_Loop->Normal);
-                } else
-                continue;
+          foreach ( $faces as $face ) {
+            if ($face->Bend_ID == -1) {
+              foreach ( $face->External_Loop->Edge_List as $fedl )
+              if ($bendE == $fedl) {
+                $flag = true;
+                if ($face1 == null)
+                $face1 = $face;
+                else
+                $face2 = $face;
               } else
               continue;
+            } else
+            continue;
 
-              if ($flag == true) {
-                $flag = false;
-                break;
-              }
+            if ($flag == true) {
+              $flag = false;
+              break;
             }
-            // echo "<br/>";//echo "<br/>";
-          } else {
           }
-
-          if ($i == 2) {
-
-            // $bendE->Concavity = $this->fx->computeConcavity($bendE, $face1, $face2);
-            // if ($bendE->Concavity != "Convex") print_r($bendE);
-            /*
-            * echo "F".$face1->Face_ID."--------B".$loop->Bend_ID."--------F".$face2->Face_ID;
-            * echo "<br/>Face ".$face1->Face_ID." Normal => ";
-            * print_r($face1->External_Loop->Normal); echo "<br/>";
-            * echo "Face ".$face2->Face_ID." Normal => ";
-            * print_r($face2->External_Loop->Normal);
-            * if ($face2->External_Loop->Normal == $face1->External_Loop->Normal)
-            * echo "same";
-            * if ($loop->Surface_Type == "Plane Surface")
-            * echo $loop->Surface_Type."<br/>";
-            * else
-            * echo "nu";
-            */
-
-            $bendLength = $fx->computeBendLength ( $bendE );
-            $angle = $fx->computeAngle ( $face1->External_Loop->Normal, $face2->External_Loop->Normal );
-            // echo "TEST:".(2. * 4.);
-            // echo "<br/>Angle = ".round($angle)." Degrees<br/><br/>\n";
-            $i = 0;
-            // dsdsdnnskdnknsndvnekjnjfsd";
-            // print_r($bendE); echo "<br/>Length = ".$bendLength;
-            self::$bends [$p] = new Bend ();
-            self::$bends [$p]->Bend_ID = $loop->Bend_ID;
-            self::$bends [$p]->Face1 = $face1->Face_ID;
-            self::$bends [$p]->Face2 = $face2->Face_ID;
-            self::$bends [$p]->Angle = $angle;
-            self::$bends [$p]->Bend_Loop = $loop->External_Loop->Loop_ID;
-            self::$bends [$p]->Bend_Length = $bendLength;
-            $_SESSION['bends'][$p] = self::$bends [$p];
-
-            //var_dump(self::$bends[$p]);
-            ++ $p;
-          }
-
+        } else {
         }
 
-        // echo "<br/>";
-      }
-      /*
-      * static $x = 0;
-      * if (strcmp($loop->Surface_Type, "Edge Side") == 0 && strcmp($loop->External_Loop->Loop_Type, "BEND") == 0)
-      * //echo $loop->Surface_Type;
-      * foreach ($loop->External_Loop->Edge_List as $fv)
-      * {
-      * if ($fv->Edge_Type == "Line"){
-      * $bendthick = $this->fx->computeBendLength($fv);
-      * $this->Bends[$x]->Bend_Thickness = $bendthick;
-      * //echo ">> ".$bendthick." ";
-      * $x++;
-      * break;
-      * }
-      * //if (strcmp($face->External_Loop->Loop_Type, "BEND") != 0){
-      * //$angle = $this->fx->computeAngle($face->External_Loop->Normal,$loop->External_Loop->Normal);
-      * //if ($bend->Bend_Loop == $loop->External_Loop->Loop_ID)
-      * //if($angle == 0)
-      * // echo $angle."lll ";//print_r($loop->External_Loop->Loop_ID); //echo "<br/>";
-      * //}
-      * }
-      */
-      // echo $loop->Loop_Type;
-      // echo "<br/><br/>";
+        if ($i == 2) {
 
-      // echo "<br/>";
+          $bendLength = $fx->computeBendLength ( $bendE );
+          $angle = $fx->computeAngle ( $face1->External_Loop->Normal, $face2->External_Loop->Normal );
+
+          $i = 0;
+
+          self::$bends [$p] = new Bend ();
+          self::$bends [$p]->Bend_ID = $loop->Bend_ID;
+          self::$bends [$p]->Face1 = $face1->Face_ID;
+          self::$bends [$p]->Face2 = $face2->Face_ID;
+          self::$bends [$p]->Angle = $angle;
+          self::$bends [$p]->Bend_Loop = $loop->External_Loop->Loop_ID;
+          self::$bends [$p]->Bend_Length = $bendLength;
+          $_SESSION['bends'][$p] = self::$bends [$p];
+
+          ++ $p;
+        }
+      }
     }
-    //var_dump($_SESSION['bends']);
-    //$this->insertBendFeatures ();
 
     return $_SESSION['bends'];
   }
@@ -228,5 +155,5 @@ class Bend {
       return $this;
     }
 
-}
+  }
   ?>
