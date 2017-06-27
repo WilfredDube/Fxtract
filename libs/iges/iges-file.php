@@ -5,16 +5,22 @@
 
 class IgesFile {
 
-  protected static $table_name="photographs";
-  protected static $db_fields=array('id', 'filename', 'type', 'size', 'caption');
-  public $id;
-  public $filename;
-  public $type;
-  public $size;
-  public $caption;
+  protected static $table_name='files';
+  protected static $db_fields=array('fileid', 'fileuserid', 'filename', 'filetype', 'filesize', 'filecaption',
+  'filemodelunits', 'filemodelmaterial', 'fileuploaddate');
+  public $fileID;
+  public $fileUserID;
+  public $fileName;
+  public $fileType;
+  public $fileSize;
+  public $fileCaption;
+  public $fileUploadDate;
+  public $fileModifiedDate;
+  public $fileModelUnits;
+  public $fileModelMaterialsID;
 
   private $temp_path;
-  protected $upload_dir="images";
+  protected $upload_dir="uploads";
   public $errors=array();
 
   protected $upload_errors = array(
@@ -41,22 +47,33 @@ class IgesFile {
       $this->errors[] = $this->upload_errors[$file['error']];
       return false;
     } else {
-      // Set object attributes to the form parameters.
-      $this->temp_path  = $file['tmp_name'];
-      $this->filename   = basename($file['name']);
-      $this->type       = $file['type'];
-      $this->size       = $file['size'];
-      // Don't worry about saving anything to the database yet.
-      return true;
-
+      if (isIGESfile($file['type'])) {
+        // Set object attributes to the form parameters.
+        $this->temp_path  = $file['tmp_name'];
+        $this->fileName   = basename($file['name']);
+        $this->fileType   = $file['type'];
+        $this->fileSize   = $file['size'];
+        $this->fileUserID = $_SESSION['username'];
+        $this->fileUploadDate = date("Y-m-d H:i:s");
+        // Don't worry about saving anything to the database yet.
+        return true;
+      }
     }
+  }
+
+  public function isIGESfile($file_type) {
+    $perfect = false;
+    if ($file_type == "model/iges") {
+      $perfect = true;
+    }
+    return $perfect;
   }
 
   public function save() {
     // A new record won't have an id yet.
-    if(isset($this->id)) {
+    if(isset($this->fileID)) {
       // Really just to update the caption
-      $this->update();
+      $this->updateModelUnits();
     } else {
       // Make sure there are no errors
 
@@ -64,23 +81,23 @@ class IgesFile {
       if(!empty($this->errors)) { return false; }
 
       // Make sure the caption is not too long for the DB
-      if(strlen($this->caption) > 255) {
+      if(strlen($this->fileCaption) > 255) {
         $this->errors[] = "The caption can only be 255 characters long.";
         return false;
       }
 
       // Can't save without filename and temp location
-      if(empty($this->filename) || empty($this->temp_path)) {
+      if(empty($this->fileName) || empty($this->temp_path)) {
         $this->errors[] = "The file location was not available.";
         return false;
       }
 
       // Determine the target_path
-      $target_path = SITE_ROOT .DS. 'public' .DS. $this->upload_dir .DS. $this->filename;
+      $target_path = SITE_ROOT .DS. $this->upload_dir .DS. $this->fileName;
 
       // Make sure a file doesn't already exist in the target location
       if(file_exists($target_path)) {
-        $this->errors[] = "The file {$this->filename} already exists.";
+        $this->errors[] = "The file {$this->fileName} already exists.";
         return false;
       }
 
@@ -90,6 +107,7 @@ class IgesFile {
         // Save a corresponding entry to the database
         if($this->create()) {
           // We are done with temp_path, the file isn't there anymore
+
           unset($this->temp_path);
           return true;
         }
@@ -106,8 +124,8 @@ class IgesFile {
     if($this->delete()) {
       // then remove the file
       // Note that even though the database entry is gone, this object
-      // is still around (which lets us use $this->image_path()).
-      $target_path = SITE_ROOT.DS.'public'.DS.$this->image_path();
+      // is still around (which lets us use $this->file_path()).
+      $target_path = SITE_ROOT.DS.$this->file_path();
       return unlink($target_path) ? true : false;
     } else {
       // database delete failed
@@ -115,8 +133,8 @@ class IgesFile {
     }
   }
 
-  public function image_path() {
-    return $this->upload_dir.DS.$this->filename;
+  public function file_path() {
+    return $this->upload_dir.DS.$this->fileName;
   }
 
   public function size_as_text() {
@@ -131,92 +149,77 @@ class IgesFile {
     }
   }
 
-  public function comments() {
-    return Comment::find_comments_on($this->id);
+  private function getUnits($gsection) {
+    $unit = trim ( $gsection [13] );
+
+    switch ($unit) {
+      case 1 :
+      $dim = "inches";
+      break;
+      case 2 :
+      $dim = "mm";
+      break;
+      case 3 :
+      $dim = "special";
+      break;
+      case 4 :
+      $dim = "ft";
+      break;
+      case 5 :
+      $dim = "miles";
+      break;
+      case 6 :
+      $dim = "metres";
+      break;
+      case 7 :
+      $dim = "Km";
+      break;
+      case 8 :
+      $dim = "mils";
+      break;
+      case 9 :
+      $dim = "microns";
+      break;
+      case 10 :
+      $dim = "cm";
+      break;
+      case 11 :
+      $dim = "minchs";
+      break;
+      default :
+      break;
+    }
+    return $dim;
   }
 
-
+  public function getModelUnits($gsection = []) {
+    return getUnits($gsection);
+  }
   // Common Database Methods
   public static function find_all() {
-    return self::find_by_sql("SELECT * FROM ".self::$table_name);
+    global $database;
+    return $database->getAllRows("SELECT * FROM ".self::$table_name, []);
   }
 
-  public static function find_by_id($id=0) {
+  public static function find_file_by_id($id=0) {
     global $database;
-    $result_array = self::find_by_sql("SELECT * FROM ".self::$table_name." WHERE id=".$database->escape_value($id)." LIMIT 1");
-    return !empty($result_array) ? array_shift($result_array) : false;
+    $result_array = self::find_file_by_sql("SELECT * FROM ".self::$table_name." WHERE file_id= ? LIMIT 1", [$id]);
+    return !empty($result_array) ? ($result_array) : false;
   }
 
-  public static function find_by_sql($sql="") {
+  public static function find_file_by_sql($sql="", $params = []) {
     global $database;
-    $result_set = $database->query($sql);
-    $object_array = array();
-    while ($row = $database->fetch_array($result_set)) {
-      $object_array[] = self::instantiate($row);
-    }
-    return $object_array;
+    $result_set = $database->findRow($sql, $params);
+    return $result_set;
   }
 
   public static function count_all() {
     global $database;
-    $sql = "SELECT COUNT(*) FROM ".self::$table_name;
-    $result_set = $database->query($sql);
-    $row = $database->fetch_array($result_set);
-    return array_shift($row);
+    $sql = "SELECT * FROM ".self::$table_name;
+    $res = $database->count($sql);
+
+    return ($res);
   }
-
-  private static function instantiate($record) {
-    // Could check that $record exists and is an array
-    $object = new self;
-    // Simple, long-form approach:
-    // $object->id 				= $record['id'];
-    // $object->username 	= $record['username'];
-    // $object->password 	= $record['password'];
-    // $object->first_name = $record['first_name'];
-    // $object->last_name 	= $record['last_name'];
-
-    // More dynamic, short-form approach:
-    foreach($record as $attribute=>$value){
-      if($object->has_attribute($attribute)) {
-        $object->$attribute = $value;
-      }
-    }
-    return $object;
-  }
-
-  private function has_attribute($attribute) {
-    // We don't care about the value, we just want to know if the key exists
-    // Will return true or false
-    return array_key_exists($attribute, $this->attributes());
-  }
-
-  protected function attributes() {
-    // return an array of attribute names and their values
-    $attributes = array();
-    foreach(self::$db_fields as $field) {
-      if(property_exists($this, $field)) {
-        $attributes[$field] = $this->$field;
-      }
-    }
-    return $attributes;
-  }
-
-  protected function sanitized_attributes() {
-    global $database;
-    $clean_attributes = array();
-    // sanitize the values before submitting
-    // Note: does not alter the actual value of each attribute
-    foreach($this->attributes() as $key => $value){
-      $clean_attributes[$key] = $database->escape_value($value);
-    }
-    return $clean_attributes;
-  }
-
-  // replaced with a custom save()
-  // public function save() {
-  //   // A new record won't have an id yet.
-  //   return isset($this->id) ? $this->update() : $this->create();
-  // }
 
   public function create() {
     global $database;
@@ -224,36 +227,33 @@ class IgesFile {
     // - INSERT INTO table (key, key) VALUES ('value', 'value')
     // - single-quotes around all values
     // - escape all values to prevent SQL injection
-    $attributes = $this->sanitized_attributes();
     $sql = "INSERT INTO ".self::$table_name." (";
-    $sql .= join(", ", array_keys($attributes));
-    $sql .= ") VALUES ('";
-    $sql .= join("', '", array_values($attributes));
-    $sql .= "')";
-    if($database->query($sql)) {
-      $this->id = $database->insert_id();
+    $sql .= "fileuserid, filename, filetype, filesize, filecaption,
+    filemodelmaterial, fileuploaddate) VALUES (?,?,?,?,?,?,?)";
+
+    $params = array($this->fileUserID, $this->fileName, $this->fileType, $this->fileSize, $this->fileCaption,
+    $this->fileModelMaterialsID, $this->fileUploadDate);
+
+    if($database->insertRow($sql, $params)) {
+      $query = "SELECT fileid from files where filename = ?";
+      $this->fileID = $database->insert_id($query, "fileid", [$this->fileName]);
+
       return true;
     } else {
       return false;
     }
   }
 
-  public function update() {
+  public function updateModelUnits() {
     global $database;
     // Don't forget your SQL syntax and good habits:
     // - UPDATE table SET key='value', key='value' WHERE condition
     // - single-quotes around all values
     // - escape all values to prevent SQL injection
-    $attributes = $this->sanitized_attributes();
-    $attribute_pairs = array();
-    foreach($attributes as $key => $value) {
-      $attribute_pairs[] = "{$key}='{$value}'";
-    }
-    $sql = "UPDATE ".self::$table_name." SET ";
-    $sql .= join(", ", $attribute_pairs);
-    $sql .= " WHERE id=". $database->escape_value($this->id);
-    $database->query($sql);
-    return ($database->affected_rows() == 1) ? true : false;
+
+    $sql = "UPDATE ".self::$table_name." SET filemodelunits = ?  WHERE fileid = ?";
+    $affected_rows = $database->updateRow($sql, [$this->fileModelUnits, $this->fileID]);
+    return ($affected_rows == 1) ? true : false;
   }
 
   public function delete() {
@@ -263,10 +263,10 @@ class IgesFile {
     // - escape all values to prevent SQL injection
     // - use LIMIT 1
     $sql = "DELETE FROM ".self::$table_name;
-    $sql .= " WHERE id=". $database->escape_value($this->id);
+    $sql .= " WHERE fileid= ?";
     $sql .= " LIMIT 1";
-    $database->query($sql);
-    return ($database->affected_rows() == 1) ? true : false;
+    $affected_rows = $database->deleteRow($sql, [$this->fileID]);
+    return ($affected_rows == 1) ? true : false;
 
     // NB: After deleting, the instance of User still
     // exists, even though the database entry does not.

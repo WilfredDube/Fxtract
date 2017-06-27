@@ -18,6 +18,9 @@ defined('FILE_REPOSITORY') ? null : define('FILE_REPOSITORY', SITE_ROOT.DS.'uplo
 // load config file first
 require_once(INCLUDE_PATH.DS.'config.php');
 
+// load database
+require_once(CLASS_PATH.DS.'database.php');
+
 // load basic functions next so that everything after can use them
 //require_once(LIB_PATH.DS.'functions.php');
 

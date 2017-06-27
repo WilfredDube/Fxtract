@@ -1,3 +1,58 @@
+/var_dump($bendz);
+// $bends->displaybends($bendz);
+//
+// $x = new Extract();
+// $dim = $x->getDimensions($gsection);
+// echo "$dim\n\n";
+
+$file = new IgesFile();
+$file->fileUserID = 5;
+$file->fileName = "file.igs";
+$file->fileType = 'model/iges';
+$file->fileSize = 1000;
+$file->fileCaption = "Bend file";
+$file->fileUploadDate = date("Y-m-d H:i:s");
+$file->fileModelUnits = 'mm';
+$file->fileModelMaterialsID = 2;
+
+$file->fileID = 1;
+$file->delete();
+$file->updateModelUnits();
+//echo  $file->fileID."\n";
+//
+// $ts = new TStrength();
+// $ts->material = "Steel";
+// $ts->tstrength = 1000;
+//
+// echo ("Material name : ".$ts->getMaterialName(2))."\n";
+// echo "Material ID : ".$ts->getMaterialID("Steel, 0.2% Carbon, cold rolled")."\n";
+// echo $ts->getMaterialStrength(2)."\n";
+// // $ts->insertMAterial();
+// $ts->deleteMAterial();
+
+// echo
+// //echo date("Y-m-d H:i:s")."\n";
+// // echo $file->fileUploadDate."\n";
+// // $file->fileID = 1;
+//  if ($file->save())
+//    echo "SAVED!!\n";
+
+//$file->fileID = $database->insert_id($file->fileName);
+//print_r($file->fileID)."fgf\n";
+// echo $file->file_path()."ddsd";
+// print_r (IgesFile::find_file_by_id(12));
+// print_r (IgesFile::count_all());
+print_r (IgesFile::find_all());
+// foreach ($edgelist as $value) {
+// var_dump($value->Edge_List);
+// }
+
+//var_dump($_SESSION ['edgelist'][1]->Edge_List);
+
+//var_dump($rbspline);
+//var_dump($edgetype);
+//var_dump($vtlist);
+//echo "$dline1\n";
 <?php
 // ini_set('display_errors','on');
 //include ('includes/config.php');

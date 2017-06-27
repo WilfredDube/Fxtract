@@ -1,87 +1,145 @@
 <?php
-require_once(LIB_PATH.DS."config.php");
+//require_once(INCLUDE_PATH.DS.'config.php');
 
-class MySQLDatabase {
+class Database {
+	public $isConnected;
+	protected $db;
 
-	private $connection;
-	public $last_query;
-	private $magic_quotes_active;
-	private $real_escape_string_exists;
-
-  function __construct() {
-    $this->open_connection();
-		$this->magic_quotes_active = get_magic_quotes_gpc();
-		$this->real_escape_string_exists = function_exists( "mysql_real_escape_string" );
-  }
+	function __construct() {
+		$this->open_connection();
+	}
 
 	public function open_connection() {
+		$this->isConnected = true;
+
 		try {
 			// create PDO connection
-			$db = new PDO ( "mysql:host=" . DBHOST . ";port=8889;dbname=" . DBNAME, DBUSER, DBPASS );
-			$db->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+			$this->db = new PDO ( "mysql:host=".DBHOST.";port=8889;dbname=".DBNAME.";charset=utf8", DBUSER, DBPASS );
+			$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 		} catch ( PDOException $e ) {
 			// show error
 			echo '<p class="bg-danger">' . $e->getMessage () . '</p>';
 			exit ();
 		}
+
+		// echo get_class($this->db)."\n";
 	}
 
 	public function close_connection() {
-			mysql_close($this->connection);
-			unset($this->connection);
-      if(isset($this->connection)) {
+		$this->database = NULL;
+		$this->isConnected = FALSE;
+	}
+
+	public function getRow($query, $params = []) {
+		try {
+			$statement = $this->db->prepare($query);
+
+			$statement->execute($params);
+
+			return $statement->fetch();
+		} catch (PDOException $e) {
+			echo '<p class="bg-danger">' . $e->getMessage () . '</p>';
+			exit ();
+		}
+
+	}
+
+	public function getAllRows($query, $params = []) {
+		try {
+			$statement = $this->db->prepare($query);
+
+			$statement->execute($params);
+
+			return $statement->fetchAll();
+
+		} catch (PDOException $e) {
+			echo '<p class="bg-danger">' . $e->getMessage () . '</p>';
+			exit ();
+		}
+
+	}
+
+	public function count ($query) {
+		try {
+			$statement = $this->db->prepare($query);
+
+			$statement->execute();
+
+			return $statement->rowCount();
+		} catch (PDOException $e) {
+			echo '<p class="bg-danger">' . $e->getMessage () . '</p>';
+			exit ();
+		}
+
+	}
+
+	private function exeCRUD($query, $params = []) {
+		try {
+			$statement = $this->db->prepare($query);
+
+			$statement->execute($params);
+			// return affected rows
+			return $statement->rowCount();
+			// $statement->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
+			// $result = $statement->fetch();
+			// return $result;
+
+		} catch (PDOException $e) {
+				echo '<p class="bg-danger">' . $e->getMessage () . '</p>';
+				exit ();
 		}
 	}
 
-	public function query($sql) {
-		$this->last_query = $sql;
-		$result = mysql_query($sql, $this->connection);
-		$this->confirm_query($result);
-		return $result;
+	public function insertRow($query, $params = []) {
+		return self::exeCRUD($query, $params);
 	}
 
-	public function escape_value( $value ) {
-		if( $this->real_escape_string_exists ) { // PHP v4.3.0 or higher
-			// undo any magic quote effects so mysql_real_escape_string can do the work
-			if( $this->magic_quotes_active ) { $value = stripslashes( $value ); }
-			$value = mysql_real_escape_string( $value );
-		} else { // before PHP v4.3.0
-			// if magic quotes aren't already on then add slashes manually
-			if( !$this->magic_quotes_active ) { $value = addslashes( $value ); }
-			// if magic quotes are active, then the slashes already exist
+	public function updateRow($query, $params = []) {
+		return self::exeCRUD($query, $params);
+	}
+
+	public function deleteRow($query, $params = []) {
+		return self::exeCRUD($query, $params);
+	}
+
+	public function findRow($query, $params = []) {
+		try {
+			$statement = $this->db->prepare($query);
+
+			$statement->execute($params);
+			// return affected rows
+			$statement->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
+			$result = $statement->fetch();
+			return $result;
+
+		} catch (PDOException $e) {
+				echo '<p class="bg-danger">' . $e->getMessage () . '</p>';
+				exit ();
 		}
-		return $value;
+
 	}
 
-	// "database-neutral" methods
-  public function fetch_array($result_set) {
-    return mysql_fetch_array($result_set);
-  }
+	public function insert_id($query, $id, $field = []){
+		try {
+			$statement = $this->db->prepare($query);
+			$statement->execute($field);
+			//$statement->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
+			$result = $statement->fetch();
 
-  public function num_rows($result_set) {
-   return mysql_num_rows($result_set);
-  }
+			// echo $result;
+			return $result[$id];
+		} catch (PDOException $e) {
 
-  public function insert_id() {
-    // get the last id inserted over the current db connection
-    return mysql_insert_id($this->connection);
-  }
-
-  public function affected_rows() {
-    return mysql_affected_rows($this->connection);
-  }
-
-	private function confirm_query($result) {
-		if (!$result) {
-	    $output = "Database query failed: " . mysql_error() . "<br /><br />";
-	    //$output .= "Last SQL query: " . $this->last_query;
-	    die( $output );
 		}
-	}
 
+		return $this->db->lastInsertId();
+	}
 }
 
-$database = new MySQLDatabase();
-$db =& $database;
+$database = new Database();
+//print_r($database->getRow("SELECT * FROM files"));
+// $database->close_connection();
+//$db =& $database;
 
 ?>
