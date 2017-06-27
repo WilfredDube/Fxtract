@@ -38,6 +38,14 @@ CREATE TABLE `bends` (
 PRIMARY KEY (`b_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+CREATE TABLE `tool_library` (
+`toolid` INTEGER NOT NULL AUTO_INCREMENT,
+`toolname` VARCHAR(50) NOT NULL unique,
+`toolangles` VARCHAR(200) NOT NULL,
+`toolcaption` VARCHAR(255) NOT NULL DEFAULT "",
+PRIMARY KEY (`toolid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
 CREATE TABLE `tstrength` (
 `m_id` INTEGER NOT NULL AUTO_INCREMENT,
 `material` varchar(255) NOT NULL UNIQUE,
