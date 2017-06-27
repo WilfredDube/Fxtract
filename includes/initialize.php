@@ -12,7 +12,7 @@ defined('SITE_ROOT') ? null :
 
 defined('INCLUDE_PATH') ? null : define('INCLUDE_PATH', SITE_ROOT.DS.'includes');
 defined('IGES_LIB_PATH') ? null : define('IGES_LIB_PATH', SITE_ROOT.DS.'libs/iges/');
-defined('TOOL_LIB_PATH') ? null : define('TOOL_LIB_PATH', SITE_ROOT.DS.'tool-lib/iges/');
+defined('TOOL_LIB_PATH') ? null : define('TOOL_LIB_PATH', SITE_ROOT.DS.'libs/tool-lib');
 defined('CLASS_PATH') ? null : define('CLASS_PATH', SITE_ROOT.DS.'classes/');
 defined('FILE_REPOSITORY') ? null : define('FILE_REPOSITORY', SITE_ROOT.DS.'uploads/');
 
@@ -27,7 +27,7 @@ require_once(CLASS_PATH.DS.'database.php');
 
 // load core objects
 require_once(IGES_LIB_PATH.DS.'iges-init.php');
-require_once(TOOL_LIB_PATH.DS.'tool_library.php');
+require_once(TOOL_LIB_PATH.DS.'tool-library.php');
 // require_once(LIB_PATH.DS.'session.php');
 // require_once(LIB_PATH.DS.'database.php');
 // require_once(LIB_PATH.DS.'database_object.php');

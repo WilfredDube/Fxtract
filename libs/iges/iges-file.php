@@ -193,7 +193,7 @@ class IgesFile {
   }
 
   public function getModelUnits($gsection = []) {
-    return getUnits($gsection);
+    return $this->getUnits($gsection);
   }
   // Common Database Methods
   public static function find_all() {

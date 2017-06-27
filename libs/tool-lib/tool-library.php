@@ -7,7 +7,7 @@ class Tool {
   public $toolAngles;
   public $toolCaption;
 
-  private static attr;
+  private static $attr;
 
 	function __construct() {
 
