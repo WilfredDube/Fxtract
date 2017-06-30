@@ -22,6 +22,13 @@ class Tool {
     return $result_set;
   }
 
+	public function findToolByAngle($angle) {
+		global $database;
+		$query = "SELECT * FROM ".self::$table_name."WHERE toolangles like '%?%'";
+		$result_set = $database->getAllRows($query, [$angle]);
+		return $result_set;
+	}
+
   public function save() {
     if ($this->toolID)
     {

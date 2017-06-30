@@ -1,11 +1,12 @@
 <?php
-//require_once(INCLUDE_PATH.DS.'config.php');
+// require_once('../includes/config.php');
 
-class Database {
+class Database extends PDO {
 	public $isConnected;
 	protected $db;
 
 	function __construct() {
+		//parent::__construct();
 		$this->open_connection();
 	}
 
@@ -18,6 +19,7 @@ class Database {
 			$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 		} catch ( PDOException $e ) {
+			$this->isConnected = false;
 			// show error
 			echo '<p class="bg-danger">' . $e->getMessage () . '</p>';
 			exit ();

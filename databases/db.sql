@@ -1,5 +1,7 @@
 CREATE TABLE `members` (
   `memberID` int(11) NOT NULL AUTO_INCREMENT,
+  `firstname` varchar(255) NOT NULL,
+  `lastname` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -8,6 +10,9 @@ CREATE TABLE `members` (
   `resetComplete` varchar(3) DEFAULT 'No',
   PRIMARY KEY (`memberID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+ALTER TABLE `members` ADD isadmin boolean not null default 0;
+
 
 CREATE TABLE `files` (
 `fileid` INTEGER NOT NULL AUTO_INCREMENT,
@@ -45,6 +50,11 @@ CREATE TABLE `tool_library` (
 `toolcaption` VARCHAR(255) NOT NULL DEFAULT "",
 PRIMARY KEY (`toolid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- TODO: add usage number
+-- TODO: add tool material
+-- TODO: add projects Table completion
+-- TODO: add feature table
 
 CREATE TABLE `tstrength` (
 `m_id` INTEGER NOT NULL AUTO_INCREMENT,

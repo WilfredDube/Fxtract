@@ -21,6 +21,7 @@ require_once(INCLUDE_PATH.DS.'config.php');
 
 // load database
 require_once(CLASS_PATH.DS.'database.php');
+require_once(CLASS_PATH.DS.'user.php');
 
 // load basic functions next so that everything after can use them
 //require_once(LIB_PATH.DS.'functions.php');
