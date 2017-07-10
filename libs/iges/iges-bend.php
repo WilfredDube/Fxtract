@@ -10,6 +10,8 @@ class Bend {
   public $Bend_Loop;
   public $Bend_Length;
   public $Bend_Thickness;
+  public $Bend_height;
+  public $Bend_force;
 
   static $bends;
 
@@ -113,6 +115,10 @@ class Bend {
         $force = $fx->computeBendingForce ( $this->Bend_Length, $thick, $unit, $TS );
 
         $id = $_SESSION ['fileid'] . "" . $this->Bend_ID . "" . $this->Bend_Loop;
+        $this->Bend_height = $height;
+        $this->Bend_force = $force;
+        $this->Bend_Thickness = $thick;
+
         $query = 'INSERT INTO bends (b_id, file_id, bend_id,face1_id, face2_id, angle, bend_loop_id, bend_length, bend_thickness, bend_radius, bend_height, bending_force) VALUES (:b_id, :fileid, :bendid, :face1id ,:face2id, :angle ,:bend_loop_id, :bend_length, :bend_thickness, :bend_radius, :bend_height, :bending_force)';
         $params = array (
           ':b_id' => trim ( $id ),
@@ -123,10 +129,10 @@ class Bend {
           ':angle' => $this->Angle,
           ':bend_loop_id' => $this->Bend_Loop,
           ':bend_length' => $this->Bend_Length,
-          ':bend_thickness' => $thick,
+          ':bend_thickness' => $this->Bend_Thickness,
           ':bend_radius' => $rads [$key],
-          ':bend_height' => $height,
-          ':bending_force' => $force
+          ':bend_height' => $this->Bend_height,
+          ':bending_force' => $this->Bend_force
         );
 
         if ($database->insertRow($query, $params) == 1)

@@ -5,8 +5,8 @@ body, html {
 /* The hero image */
 .hero-image {
     /* The image used */
-    background-image: url("machine.jpg");
-    background-color: rgba(0, 0, 0, 0.8);
+    background-image: url("press-brake-bend.jpg");
+    background-color: rgba(0, 0, 0, 0.4);
     background-blend-mode: multiply;
 
     /* Set a specific height */

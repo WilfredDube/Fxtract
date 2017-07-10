@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+session_start();
 
 // Define the core paths
 // Define them as absolute paths to make sure that require_once works as expected
@@ -8,8 +11,9 @@
 defined('DS') ? null : define('DS', DIRECTORY_SEPARATOR);
 
 defined('SITE_ROOT') ? null :
-	define('SITE_ROOT', '.');
+	define('SITE_ROOT', realpath(__DIR__ . '/..'));
 
+defined('INCLUDE_PATH') ? null :define('FILEREPOSITORY', SITE_ROOT.DS.'uploads');
 defined('INCLUDE_PATH') ? null : define('INCLUDE_PATH', SITE_ROOT.DS.'includes');
 defined('IGES_LIB_PATH') ? null : define('IGES_LIB_PATH', SITE_ROOT.DS.'libs/iges/');
 defined('TOOL_LIB_PATH') ? null : define('TOOL_LIB_PATH', SITE_ROOT.DS.'libs/tool-lib');
@@ -22,6 +26,8 @@ require_once(INCLUDE_PATH.DS.'config.php');
 // load database
 require_once(CLASS_PATH.DS.'database.php');
 require_once(CLASS_PATH.DS.'user.php');
+// require_once(CLASS_PATH.DS.'upload.php');
+require_once(CLASS_PATH.DS.'project.php');
 
 // load basic functions next so that everything after can use them
 //require_once(LIB_PATH.DS.'functions.php');

@@ -1,0 +1,34 @@
+TODO: deletion procedure for files, TOOLS, machines, users
+TODO: COPY DB ROW IN TO OBJECT ON DETAILS pages (projects view, projectdetails)
+TODO: ADD SESSION VAR FOR projectid AND fileid
+TODO: ADD WIN32 FILE TYPE
+
+TODO: tune the update methods
+---------------------------------------------------------------------
+global $database;
+// Don't forget your SQL syntax and good habits:
+// - UPDATE table SET key='value', key='value' WHERE condition
+// - single-quotes around all values
+// - escape all values to prevent SQL injection
+$attributes = $this->sanitized_attributes();
+$attribute_pairs = array();
+foreach($attributes as $key => $value) {
+  $attribute_pairs[] = "{$key}='{$value}'";
+}
+$sql = "UPDATE ".self::$table_name." SET ";
+$sql .= join(", ", $attribute_pairs);
+$sql .= " WHERE id=". $database->escape_value($this->id);
+$database->query($sql);
+return ($database->affected_rows() == 1) ? true : false;
+---------------------------------------------------------------------->
+
+TODO: Feature Extraction code (extraction and DB insertion)
+TODO: Model Display and interation design
+TODO: Tool Selection
+TODO: Machine Selection
+TODO: Bends Sequence
+TODO: Admin Integration
+TODO: UI/UX Design (from photoshop to style guides)
+TODO: UI Development [JS, Ajax, smarty templating, tool tips, error display]
+TODO: Project tuning (redesign and refactoring) + DB tuning
+TODO: Code/buy installer for the project

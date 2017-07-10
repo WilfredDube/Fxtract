@@ -4,7 +4,7 @@ ini_set("display_errors", "on");
 require_once ('../includes/initialize.php');
 
 //check if already logged in move to home page
-if( $user->is_logged_in() ){ header('Location: register.php'); }
+if( $user->is_logged_in() ){ header('Location: myprojects.php'); }
 
 //process login form if submitted
 if(isset($_POST['submit'])){
@@ -12,9 +12,12 @@ if(isset($_POST['submit'])){
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 
+	echo "$username";
+
 	if($user->login($username,$password)){
 		$_SESSION['user']['username'] = $username;
-		header('Location: memberpage.php');
+		$error[] = 'qqqqqqq.'.$_SESSION['user']['username'];
+		header('Location: myprojects.php');
 		exit;
 
 	} else {
@@ -23,6 +26,7 @@ if(isset($_POST['submit'])){
 
 }//end if submit
 
+// echo "isset($_SESSION['user']['username'])";
 //define page title
 $title = 'Login';
 
@@ -32,7 +36,7 @@ require('templates/header.php');
 
 
 <div class="container">
-	
+
 	<div class="row">
 
 	    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">

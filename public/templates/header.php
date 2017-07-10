@@ -4,10 +4,13 @@
     <meta charset="utf-8">
     <title><?php if(isset($title)){ echo $title; }?></title>
     <link href="style/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="../style/admin/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./style/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="style/main.css">
     <link rel="stylesheet" href="style/hero.css">
     <link rel="stylesheet" href="style/overlay.css">
-    <?php if(!($title == 'My Projects')){
+    <?php if(!$user->is_logged_in()){
     echo "<link rel=\"stylesheet\" href=\"style/index.css\">";
     } ?>
     <script src="style/bootstrap/js/jquery.js"></script>
@@ -35,6 +38,108 @@
             mbargin-tbop:-150px;
     }
     </style>
+    <style>
+      #myInput {
+        background-image: url('/css/searchicon.png');
+        /* Add a search icon to input */
+        background-position: 10px 12px;
+        /* Position the search icon */
+        background-repeat: no-repeat;
+        /* Do not repeat the icon image */
+        width: 100%;
+        /* Full-width */
+        font-size: 16px;
+        /* Increase font-size */
+        padding: 12px 20px 12px 40px;
+        /* Add some padding */
+        border: 1px solid #ddd;
+        /* Add a grey border */
+        margin-bottom: 12px;
+        /* Add some space below the input */
+      }
+
+      #myTable {
+        border-collapse: collapse;
+        /* Collapse borders */
+        width: 100%;
+        /* Full-width */
+        border: 1px solid #ddd;
+        /* Add a grey border */
+        font-size: 18px;
+        /* Increase font-size */
+      }
+
+      #myTable th,
+      #myTable td {
+        text-align: left;
+        /* Left-align text */
+        padding: 12px;
+        /* Add padding */
+      }
+
+      #myTable tr {
+        /* Add a bottom border to all table rows */
+        border-bottom: 1px solid #ddd;
+      }
+
+      #myTable tr.header,
+      #myTable tr:hover {
+        /* Add a grey background color to the table header and on hover */
+        background-color: #f1f1f1;
+      }
+    </style>
+    <script>
+      function myFunction() {
+        // Declare variables
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[0];
+          td1 = tr[i].getElementsByTagName("td")[1];
+          if (td || td1) {
+            if ((td.innerHTML.toUpperCase().indexOf(filter) > -1) || (td1.innerHTML.toUpperCase().indexOf(filter) > -1)) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        margin: 0;
+      }
+
+      .icon-bar {
+        width: 100%;
+        background-color: #555;
+        overflow: auto;
+      }
+
+      .icon-bar a {
+        float: left;
+        width: 20%;
+        text-align: center;
+        padding: 12px 0;
+        transition: all 0.3s ease;
+        color: white;
+        font-size: 36px;
+      }
+
+      .icon-bar a:hover {
+        background-color: #000;
+      }
+
+      .active {
+        background-color: #4CAF50 !important;
+      }
+    </style>
 <body>
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
@@ -59,13 +164,15 @@ if (!$user->is_logged_in()) {
 }else {
 ?>
            <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">File Options <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projects <span class="caret"></span></a>
             <ul class="dropdown-menu">
             <?php if (isset($_POST['cool'])) {?>
-  <li><a href="memberpage.php">New File</a></li>
-  <li role="separator" class="divider"></li>
+  <!-- <li><a id="myBtn" href="">New Project</a></li> -->
+  <!-- <li role="separator" class="divider"></li> -->
+  <!-- <li><a href="modelupload.php">New Model</a></li> -->
+  <!-- <li role="separator" class="divider"></li> -->
   <?php }?>
-              <li><a href="uploadhistory.php">Uploaded Files</a></li>
+              <li><a href="myprojects.php">My Projects</a></li>
               <!--li><a href="#">View Files</a></li>
               <li><a href="#">Features</a></li>
 
