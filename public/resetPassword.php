@@ -1,7 +1,8 @@
-<?php require('includes/config.php'); 
+<?php
+require('includes/config.php'); 
 
 //if logged in redirect to members page
-if( $user->is_logged_in() ){ header('Location: memberpage.php'); } 
+if( $user->is_logged_in() ){ header('Location: memberpage.php'); }
 
 $stmt = $db->prepare('SELECT resetToken, resetComplete FROM members WHERE resetToken = :token');
 $stmt->execute(array(':token' => $_GET['key']));
@@ -61,7 +62,7 @@ if(isset($_POST['submit'])){
 $title = 'Reset Account';
 
 //include header template
-require('layout/header.php'); 
+require('layout/header.php');
 ?>
 
 <div class="container">
@@ -112,7 +113,7 @@ require('layout/header.php');
 							</div>
 						</div>
 					</div>
-					
+
 					<hr>
 					<div class="row">
 						<div class="col-xs-6 col-md-6"><input type="submit" name="submit" value="Change Password" class="btn btn-primary btn-block btn-lg" tabindex="3"></div>
@@ -126,7 +127,7 @@ require('layout/header.php');
 
 </div>
 
-<?php 
+<?php
 //include header template
-require('layout/footer.php'); 
+require('layout/footer.php');
 ?>

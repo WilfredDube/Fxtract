@@ -1,6 +1,4 @@
 <?php
-ini_set("display_errors", "on");
-//include config
 require_once ('../includes/initialize.php');
 
 //check if already logged in move to home page

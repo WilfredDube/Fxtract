@@ -1,5 +1,4 @@
 <?php
-ini_set("display_errors", "on");
 require_once('../includes/initialize.php');
 
 //if not logged in redirect to login page

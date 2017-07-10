@@ -1,7 +1,5 @@
 <?php
-ini_set("display_errors", "on");
 require_once('../includes/initialize.php');
-ini_set('file_uploads','on');
 //ini_set('upload_temp_dir','/home/digitalincentives/www/loginregister/uploads/');
 
 //if not logged in redirect to login page
