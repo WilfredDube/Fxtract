@@ -12,31 +12,6 @@ if (!$user->is_logged_in()) {
 
 $_POST['cool'] = 1;
 
-if (isset($_GET['delete_id'])) {
-    $fid = $_GET['delete_id'];
-    try {//echo "dsds"; update files set units='nn' where file_id=2;
-$query = "DELETE FROM `files` where file_id=$fid";
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-        $query = "DELETE FROM `bends`";
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-            /**/
-$query = "ALTER TABLE `files` DROP file_id";
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-        $query = "ALTER TABLE `files` AUTO_INCREMENT = 1";
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-            /**/
-$query = "ALTER TABLE `files` ADD `file_id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST";
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-    } catch (PDOException $e) {
-        $error[] = $e->getMessage();
-    }
-    header("Location: uploadhistory.php");
-}
 
 //define page title
 $title = 'My Projects';
@@ -64,17 +39,14 @@ $_POST['process'] = 1;
 
 // TOD: Fix lines below
 $fileID = trim($_GET['id']);
-$query = "SELECT * FROM files  where file_id = '$fileID'";
-foreach ($database->getRow($query) as $row){
-$iges_file = $row['filename'];
-$unit = $row['units'];
-$caption = $row['file_caption'];
+// echo $fileID;
+$query = "select filename from files where fileid=? LIMIT 1";
 
-}
-
+$res = $database->getRow($query, [$fileID]);
+$iges_file = array_shift($res);
 $title = 'Draw';
 //include header template
-require('layout/header.php');
+require('templates/header.php');
 /*
 if (isset($_SESSION['BENDS'])){
 $obj = (($_SESSION['BENDS']));
@@ -359,9 +331,11 @@ var dennis = graph.newNode({
 });*/
 
 <?php
-$query = "SELECT * FROM bends  where file_id = '$fileID'";
+$query = "SELECT * FROM features  where fileid = ?";
 $i = 1;
-foreach ($db->query($query) as $row){
+$result = $database->getAllRows($query, [$fileID]);
+if(isset($result))
+foreach ($result as $row){
 //$iges_file = $row['file_id'];
 //if (($i % 2) == 0)
 {

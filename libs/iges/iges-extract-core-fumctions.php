@@ -1,9 +1,16 @@
 <?php
 
 class Extract {
+  private $dsection;
+  private $psection;
+  private $gsection;
 
   function __construct() {
-
+    if (isset($_SESSION['psection']) && isset($_SESSION['dsection']) && isset($_SESSION['gsection'])) {
+      $this->psection = $_SESSION ['psection'];
+      $this->dsection = $_SESSION ['dsection'];
+      $this->gsection = $_SESSION ['gsection'];
+    }
   }
 
   public function multiexplode($delimeters, $string) {

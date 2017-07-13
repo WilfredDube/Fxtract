@@ -1,6 +1,6 @@
 <?php
 
-require_once (IGES_LIB_PATH.'iges-extract-core-fumctions.php');
+
 require_once (IGES_LIB_PATH.'iges-tensile-strength.php');
 require_once (IGES_LIB_PATH.'iges-bend.php');
 require_once (IGES_LIB_PATH.'iges-bspline-curve.php');
@@ -16,5 +16,7 @@ require_once (IGES_LIB_PATH.'iges-parameter.php');
 require_once (IGES_LIB_PATH.'iges-parser.php');
 require_once (IGES_LIB_PATH.'iges-shell.php');
 require_once (IGES_LIB_PATH.'iges-vertex.php');
+require_once (IGES_LIB_PATH.'iges-bend-features.php');
+require_once (IGES_LIB_PATH.'iges-extract-core-fumctions.php');
 
 ?>

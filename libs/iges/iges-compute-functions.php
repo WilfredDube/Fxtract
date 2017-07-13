@@ -165,6 +165,7 @@ class Computation {
   }
 
   private function toMM($value, $unit) {
+    $out = 0;
     switch ($unit) {
       case 1 :
       $out = $value * 25.4;

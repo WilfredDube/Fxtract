@@ -23,7 +23,7 @@ class RBSplineCurve {
     global $xtract;
     $counter = 0;
 
-    if ($dsection != null)
+    // if ($dsection != null)
     foreach ( $dsection as $value ) {
 
       if ($value->EntityType == 126)
@@ -38,6 +38,7 @@ class RBSplineCurve {
 
         $j = 1;
         {
+          $edt = new RBSplineCurve();
           if (($j + 1) >= count ( $arr ) && ($j + 2) >= count ( $arr )) {
             // echo "out";
             break;
@@ -49,17 +50,17 @@ class RBSplineCurve {
           $N = 1 + $K - $M;
           $A = $N + 2 * $M;
 
-          $this->K = $K;
-          $this->Degree = $M;
+          $edt->K = $K;
+          $edt->Degree = $M;
 
-          $this->PROP1 = $arr [$j + 2];
-          $this->PROP2 = $arr [$j + 3];
-          $this->PROP3 = $arr [$j + 4];
-          $this->PROP4 = $arr [$j + 5];
+          $edt->PROP1 = $arr [$j + 2];
+          $edt->PROP2 = $arr [$j + 3];
+          $edt->PROP3 = $arr [$j + 4];
+          $edt->PROP4 = $arr [$j + 5];
 
-          $this->Knot_Sequence = array ();
-          $this->Weights = array ();
-          $this->Control_Points = array ();
+          $edt->Knot_Sequence = array ();
+          $edt->Weights = array ();
+          $edt->Control_Points = array ();
 
           $knotstart = $j + 6;
           $knotend = $knotstart + $A;
@@ -79,7 +80,7 @@ class RBSplineCurve {
               $kn [$pos] = "E";
             }
 
-            $this->Knot_Sequence [$x] = $kn;
+            $edt->Knot_Sequence [$x] = $kn;
           }
 
           for($x = 0, $i = $weightstart; $i <= ($weightend); $i ++, $x ++) {
@@ -91,7 +92,7 @@ class RBSplineCurve {
               $kn [$pos] = "E";
             }
 
-            $this->Weights [$x] = $kn;
+            $edt->Weights [$x] = $kn;
           }
 
           for($x = 0, $i = $controlpstart; $i <= ($controlpend); $i ++, $x ++) {
@@ -103,15 +104,21 @@ class RBSplineCurve {
               $kn [$pos] = "E";
             }
 
-            $this->Control_Points [$x] = $kn;
+            $edt->Control_Points [$x] = $kn;
           }
 
-          $this->Control_Pend = count ( $this->Control_Points );
+          $edt->Control_Pend = count ( $edt->Control_Points );
 
-          $edgetype [$id] = $this;
+          // var_dump($edt->Control_Pend);
+          // if ($counter == 2)
+          // break;
+
+          $edgetype [$id] = $edt;
         }
       }
     }
+
+    // var_dump($edgetype);
 
     return ($edgetype);
   }

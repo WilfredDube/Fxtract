@@ -34,19 +34,26 @@ class BendFeatures
   public $bending_force;
 
 // $record = argument is a bend feature
-  public function __construct($record)
+  public function __construct($record, $projectid, $fileid)
   {
     // Could check that $record exists and is an array
-	  $object = new self;
+	  // $object = new self;
 
-	  // More dynamic, short-form approach:
-	  foreach ($record as $attribute=>$value) {
-	      if ($object->has_attribute($attribute)) {
-	          $object->$attribute = $value;
-	      }
-	  }
+    // $this->featureid = $featureid;
+    $this->projectid = $projectid;
+    $this->fileid = $fileid;
+    $this->bend_id = $record->Bend_ID;
+    $this->face1_id = $record->Face1;
+    $this->face2_id = $record->Face2;
+    $this->angle = $record->Angle;
+    $this->bend_loop_id  = $record->Bend_Loop;
+    $this->bend_length = $record->Bend_Length;
+    $this->bend_thickness  = $record->Bend_Thickness;
+    $this->bend_radius = $record->Bend_Radius;
+    $this->bend_height = $record->Bend_height;
+    $this->bending_force = $record->Bend_force;
 
-		return $object;
+		// return $object;
   }
 
   private function has_attribute($attribute)
@@ -84,82 +91,17 @@ class BendFeatures
 
     return $clean_attributes;
   }
-
-  public function save()
+  // Common Database Methods
+  public static function find_all()
   {
-    // A new record won't have an id yet.
-  	return isset($this->featureid) ? $this->update() : $this->create();
+      global $database;
+      return $database->getAllRows("SELECT * FROM ".self::$table_name, []);
   }
-
-  public function create()
-  {
-    global $database;
-  	// Don't forget your SQL syntax and good habits:
-  	// - INSERT INTO table (key, key) VALUES ('value', 'value')
-  	// - single-quotes around all values
-  	// - escape all values to prevent SQL injection
-  	$attributes = $this->sanitized_attributes();
-
-    $sql = "INSERT INTO ".self::$table_name." (";
-    $sql .= join(", ", array_keys($attributes));
-    $sql .= ") VALUES (?,?,?,?,?)";
-
-    $params = array_values($attributes);
-
-    if ($database->insertRow($sql, $params)) {
-      // $query = "SELECT projectid from projects where projectname = ?";
-      // $this->projectid = $database->insert_id($query, "projectid", [$this->projectname]);
-      return true;
-    } else {
-      	return false;
-    }
-  }
-
-  public function update()
-  {
-    global $database;
-	  // Don't forget your SQL syntax and good habits:
-	  // - UPDATE table SET key='value', key='value' WHERE condition
-	  // - single-quotes around all values
-	  // - escape all values to prevent SQL injection
-	  $attributes = $this->sanitized_attributes();
-    $attribute_pairs = array();
-    foreach ($attributes as $key => $value) {
-      $attribute_pairs[] = "{$key}='{$value}'";
-    }
-    $sql = "UPDATE ".self::$table_name." SET ";
-    $sql .= join(", ", $attribute_pairs);
-    $sql .= " WHERE projectid=?";
-
-    return ($database->updateRow($sql, [$this->projectid]) == 1) ? true : false;
-  }
-
-  public function destroy()
-  {
-      // First remove the database entry
-  if ($this->delete()) {
-      // then remove the file
-    // Note that even though the database entry is gone, this object
-    // is still around (which lets us use $this->file_path()).
-    // $target_path = SITE_ROOT.DS.$this->file_path();
-    return unlink($target_path) ? true : false;
-  } else {
-      // database delete failed
-    return false;
-  }
-  }
-
-// Common Database Methods
-public static function find_all()
-{
-    global $database;
-    return $database->getAllRows("SELECT * FROM ".self::$table_name, []);
-}
 
   public static function find_project_by_id($id=0)
   {
       global $database;
-      $result_array = self::find_project_by_sql("SELECT projectfileid FROM ".self::$table_name." WHERE projectid=? LIMIT 1", [$id]);
+      $result_array = self::find_project_by_sql("SELECT bend_id FROM ".self::$table_name." WHERE projectid=? LIMIT 1", [$id]);
       print_r($result_array);
       return !empty($result_array) ? array_shift($result_array) : false;
   }
@@ -180,40 +122,87 @@ public static function find_all()
       return ($res);
   }
 
-  public function updateProject()
+  public function save()
   {
-      global $database;
-  // Don't forget your SQL syntax and good habits:
-  // - UPDATE table SET key='value', key='value' WHERE condition
-  // - single-quotes around all values
-  // - escape all values to prevent SQL injection
-
-    $sql = "UPDATE ".self::$table_name." SET filemodelunits = ?  WHERE fileid = ?";
-      $affected_rows = $database->updateRow($sql, [$this->fileModelUnits, $this->fileID]);
-      return ($affected_rows == 1) ? true : false;
+    // print_r($this);
+    // A new record won't have an id yet.
+    return isset($this->featureid) ? $this->update() : $this->create();
   }
 
-  public static function delete($id)
+  public function create()
   {
-      global $database;
+    global $database;
+    // Don't forget your SQL syntax and good habits:
+    // - INSERT INTO table (key, key) VALUES ('value', 'value')
+    // - single-quotes around all values
+    // - escape all values to prevent SQL injection
+    $attributes = $this->sanitized_attributes();
+
+    $sql = "INSERT INTO ".self::$table_name." (";
+    $sql .= join(", ", array_keys($attributes));
+    $sql .= ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+
+    $params = array_values($attributes);
+
+    if ($database->insertRow($sql, $params)) {
+      // $query = "SELECT projectid from projects where projectname = ?";
+      // $this->projectid = $database->insert_id($query, "projectid", [$this->projectname]);
+      return true;
+    } else {
+        return false;
+    }
+  }
+
+  public function update()
+  {
+    global $database;
+    // Don't forget your SQL syntax and good habits:
+    // - UPDATE table SET key='value', key='value' WHERE condition
+    // - single-quotes around all values
+    // - escape all values to prevent SQL injection
+    $attributes = $this->sanitized_attributes();
+    $attribute_pairs = array();
+    foreach($attributes as $key => $value) {
+      $attribute_pairs[] = "{$key}='{$value}'";
+    }
+    $sql = "UPDATE ".self::$table_name." SET ";
+    $sql .= join(", ", $attribute_pairs);
+    $sql .= " WHERE featureid=?";
+
+    // return ($database->updateRow($sql, [$this->projectid]) == 1) ? true : false;
+    $affected_rows = $database->updateRow($sql, [$this->featureid]);
+    return ($affected_rows == 1) ? true : false;
+  }
+
+  public function destroy($pid)
+  {
+      // First remove the database entry
+    if ($this->delete($pid)) {
+        // then remove the file
+      // Note that even though the database entry is gone, this object
+      // is still around (which lets us use $this->file_path()).
+      // $target_path = SITE_ROOT.DS.$this->file_path();
+      return true;
+    } else {
+        // database delete failed
+      return false;
+    }
+  }
+
+  public static function delete($pid)
+  {
+    global $database;
   // Don't forget your SQL syntax and good habits:
   // - DELETE FROM table WHERE condition LIMIT 1
   // - escape all values to prevent SQL injection
   // - use LIMIT 1
-    $projectsql = "DELETE FROM ".self::$table_name;
-      $projectsql .= " WHERE projectid= ?";
-      $projectsql .= " LIMIT 1";
+    $sql = "DELETE FROM ".self::$table_name;
+    $sql .= " WHERE projectid= ?";
+    $sql .= " LIMIT 1";
 
-      $filesql = "DELETE FROM files";
-      $filesql .= " WHERE fileprojectid= ?";
-      $filesql .= " LIMIT 1";
+    $affected_rows  = $database->deleteRow($sql, [$pid]);
 
-      $fileid = self::getModelFileID($id);
-
-      $deleted_rows   = IgesFile::destroy($fileid);
-      $affected_rows  = $database->deleteRow($projectsql, [$id]);
-
-      return ($affected_rows == 1 && $deleted_rows == 1) ? true : false;
+    return ($affected_rows == 1 && $deleted_rows == 1) ? true : false;
 
   // NB: After deleting, the instance of User still
   // exists, even though the database entry does not.

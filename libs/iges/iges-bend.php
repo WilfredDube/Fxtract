@@ -10,6 +10,7 @@ class Bend {
   public $Bend_Loop;
   public $Bend_Length;
   public $Bend_Thickness;
+  public $Bend_Radius;
   public $Bend_height;
   public $Bend_force;
 
@@ -107,36 +108,33 @@ class Bend {
 
         $height = 2.5 * $thick * $rads [$key];
 
-        $query = "SELECT filemodelmaterial from files where fileid=?";
-        $materialID = $database->insert_id($query, "m_id", [$_SESSION ['fileid']]);
+        $query = "SELECT filemodelmaterialid from files where fileid=?";
+        $materialID = $database->findRow($query, [$_SESSION ['fileid']]);
 
-        $TS = $tstrength->getMaterialStrength($materialID);
+        $TS = $tstrength->getMaterialStrength($materialID->filemodelmaterialid  );
 
-        $force = $fx->computeBendingForce ( $this->Bend_Length, $thick, $unit, $TS );
+        $force = $fx->computeBendingForce ( $bend->Bend_Length, $thick, $unit, $TS );
 
-        $id = $_SESSION ['fileid'] . "" . $this->Bend_ID . "" . $this->Bend_Loop;
-        $this->Bend_height = $height;
-        $this->Bend_force = $force;
-        $this->Bend_Thickness = $thick;
+        // echo $bend->Bend_Length." ,Thickness : ".$thick." ,Units : ".$unit." ,Tensile Strength :".$TS." ,Bend Force :".$force."\n";
 
-        $query = 'INSERT INTO bends (b_id, file_id, bend_id,face1_id, face2_id, angle, bend_loop_id, bend_length, bend_thickness, bend_radius, bend_height, bending_force) VALUES (:b_id, :fileid, :bendid, :face1id ,:face2id, :angle ,:bend_loop_id, :bend_length, :bend_thickness, :bend_radius, :bend_height, :bending_force)';
-        $params = array (
-          ':b_id' => trim ( $id ),
-          ':fileid' => $_SESSION ['fileid'],
-          ':bendid' => $this->Bend_ID,
-          ':face1id' => $this->Face1,
-          ':face2id' => $this->Face2,
-          ':angle' => $this->Angle,
-          ':bend_loop_id' => $this->Bend_Loop,
-          ':bend_length' => $this->Bend_Length,
-          ':bend_thickness' => $this->Bend_Thickness,
-          ':bend_radius' => $rads [$key],
-          ':bend_height' => $this->Bend_height,
-          ':bending_force' => $this->Bend_force
-        );
+        // TODO: Make feature unique
+        $featureid = $_SESSION ['fileid'] . "" . $bend->Bend_ID . "" . $bend->Bend_Loop."";
+        $bend->Bend_ID .= trim ( $featureid );
+        $bend->Bend_height = $height;
+        $bend->Bend_force = $force;
+        $bend->Bend_Thickness = $thick;
+        $bend->Bend_Radius = $rads [$key];
 
-        if ($database->insertRow($query, $params) == 1)
-        echo "Successfully added new bend";
+        // echo "\n".$bend->Bend_ID."  \n";
+
+        // print_r($bend);
+
+        $bendfeature = new BendFeatures($bend, 7, 7);
+
+        // print_r($bendfeature);
+
+        $bendfeature->save();
+
       } /* */
       $done = true;
     }

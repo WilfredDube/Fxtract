@@ -37,27 +37,9 @@ if(isset($_POST['upload'])) {
   if ($igesfile->attach_file($_FILES['upload_file'])) {
     $igesfile->save();
     header('Location: myprojectdetails.php?id='.$id.'&mid='.$mid);
-    // echo "$igesfile->fileID\n";
-    // print_r($igesfile);
-    // echo "GOOD";
-
-  // if (is_uploaded_file($_FILES['upload_file']['tmp_name'])) {
-	//    $file_name = $_POST['filename'];
-	//    $tmp_name = $_FILES['upload_file']['tmp_name'];
-	//    $file_type = $_FILES['upload_file']['type'];
-
-  // print_r($igesfile);
-	// if($upload->validate_file($file_name, $tmp_name, $file_type) == 1){
-	// 	header('Location: myprojects.php');
-	// 	exit;
-  //
-	// } else {
-	// 	$error[] = 'Uploading failed.';
-	// }
-  //
-    } else {
-	$error[] = 'Select file to upload.';
-    }
+  } else {
+	   $error[] = 'Select file to upload.';
+  }
 }
 
 // $id = trim($_GET['id']);
@@ -311,7 +293,7 @@ require('templates/footer.php');
 <footer>
 <div class="icon-bar">
 <a href="myprojects.php"><i class="fa fa-arrow-left"></i></a>
-<a href="#"><i class="fa fa-eye"></i></a>
+<a href="<?php echo "myprojectview.php?id=".Project::getProjectFileID($id)?>"><i class="fa fa-eye"></i></a>
 <a class="active" href="#"><i class="fa fa-bars"></i></a>
 <!-- <a href="myprojects.php"><i class="fa fa-share"></i></a> -->
 <!-- <a href="#"><i class="fa fa-envelope"></i></a> -->

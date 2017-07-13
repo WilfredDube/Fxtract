@@ -10,13 +10,16 @@ class Parser {
   public $xt;
 
   function __construct($filename) {
+
+    // echo "<br/>".$filename."<br/>";
     $this->_file = fopen ( $filename, "r" );
+    // echo $this->_file;
     $this->entity [] = new Entity ();
     $this->psection = new PSection ();
     $this->gsection = array ();
     $this->xt = new Extract ();
 
-    echo "File : {$filename}\n\n";
+    // echo "File : {$filename}\n\n";
   }
 
   public function getPsection() {
@@ -49,7 +52,7 @@ class Parser {
       $lines = $this->get_line ();
 
       if (strpos ( $lines, 'P' )) {
-        echo "DONE";
+        // echo "DONE";
         break;
       }
 
@@ -613,6 +616,7 @@ class Parser {
   }
 
   public function getDsection() {
+    $_SESSION ['dsection'] = $this->entity;
     return $this->entity;
   }
 
@@ -674,8 +678,11 @@ class Parser {
       $line = $this->get_pline ();
     }
 
+    $_SESSION ['psection'] = $this->psection->psection;
+
     return $this->psection->psection;
   }
+
   public function get_pline() {
     $line = fgets ( $this->_file );
     // do same stuff with the $line
@@ -792,8 +799,16 @@ class Parser {
     ), $tempstring );
     $this->gsection = $array;
 
+    $_SESSION ['gsection'] = array ();
+		$_SESSION ['gsection'] = $this->gsection;
+
     return $this->gsection;
   }
+
+
+  public function end() {
+		$_SESSION ['dsection'] = $this->entity;
+	}
 }
 
 ?>

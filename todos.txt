@@ -1,9 +1,9 @@
-TODO: deletion procedure for files, TOOLS, machines, users
+TODO : deletion procedure for files, TOOLS, machines, users
 TODO: COPY DB ROW IN TO OBJECT ON DETAILS pages (projects view, projectdetails)
 TODO: ADD SESSION VAR FOR projectid AND fileid
-TODO: ADD WIN32 FILE TYPE
+TODO : ADD WIN32 FILE TYPE
 
-TODO: tune the update methods
+TODO : tune the update methods
 ---------------------------------------------------------------------
 global $database;
 // Don't forget your SQL syntax and good habits:
@@ -22,13 +22,14 @@ $database->query($sql);
 return ($database->affected_rows() == 1) ? true : false;
 ---------------------------------------------------------------------->
 
-TODO: Feature Extraction code (extraction and DB insertion)
-TODO: Model Display and interation design
+TODO : Feature Extraction code (extraction and DB insertion)
+TODO: Model Display and interation design (nav bar fix)
 TODO: Tool Selection
 TODO: Machine Selection
 TODO: Bends Sequence
+TODO: Perfect Feature Extraction module
 TODO: Admin Integration
 TODO: UI/UX Design (from photoshop to style guides)
-TODO: UI Development [JS, Ajax, smarty templating, tool tips, error display]
+TODO: UI Development [JS, Ajax, smarty templating, tool tips, Flash Messages, error handling and display]
 TODO: Project tuning (redesign and refactoring) + DB tuning
 TODO: Code/buy installer for the project

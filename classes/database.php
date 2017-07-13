@@ -129,6 +129,7 @@ class Database extends PDO {
 			//$statement->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
 			$result = $statement->fetch();
 
+			// var_dump($id);//."wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 			// echo $result;
 			return $result[$id];
 		} catch (PDOException $e) {

@@ -1,8 +1,9 @@
 <?php
+ob_start();
+session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('file_uploads','on');
-session_start();
 
 // Define the core paths
 // Define them as absolute paths to make sure that require_once works as expected

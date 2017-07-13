@@ -11,6 +11,13 @@ class TStrength {
 		// $this->_db = $db;
 	}
 
+	public function getMaterialByID($id) {
+		global $database;
+		$query = "SELECT * FROM ".self::$table_name." where m_id= ?";
+		$res = $database->getRow($query, [$id]);
+		return (is_array($res) && !empty($res)) ? array_shift($res) : $res;
+	}
+
 	public function getMaterialID($material) {
     global $database;
 		$query = "SELECT m_id FROM ".self::$table_name." where material= ?";

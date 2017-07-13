@@ -1,9 +1,9 @@
 <?php
 
-require_once ('./includes/initialize.php');
+require_once ('../includes/initialize.php');
 
 $iges_file = 'test.igs';
-
+$_SESSION ['fileid'] = 7;
 $parser = new Parser(FILE_REPOSITORY.$iges_file);
 $total = $parser->count_dline();
 
@@ -29,26 +29,37 @@ $psection = $parser->param_section();
 $gsection = $parser->global_section();
 $dsection = $parser->getDsection();
 
+// var_dump($gsection);
 // Extraction of vertextes to create the vertex list
 $vt = new Vertex();
 $vt->vertract($dsection, $psection);
 $vtlist = $vt->getVertexList();
 
+// var_dump($vtlist);
 $edgetype = array();
 $rbspline = new RBSplineCurve();
 $edgetype = $rbspline->rbsplineCurveTract($dsection, $psection);//, $edgetype);
 
+// var_dump($edgetype);
 $edge = new Edge();
 $edgelist = $edge->edgetract($dsection, $psection, $edgetype, $vt);
 
+// print_r($edgelist);
 //($edge->getEdgeList());
 $loops = new Loop();
 $loops->looptract($dsection, $psection, $edge, $vtlist);
 
+// print_r($loops);
 $bends = new Bend();
 $bendz = $bends->bendTract($loops->getLoops());
 
-//var_dump($bendz);
+$x = new Extract();
+$dim = $x->getDimensions($gsection);
+
+$bends->insertBendFeatures($bendz, $dim);
+
+// print_r($bendz );
+// var_dump($bendz);
 // $bends->displaybends($bendz);
 //
 // $x = new Extract();
@@ -65,11 +76,12 @@ $file->fileUploadDate = date("Y-m-d H:i:s");
 $file->fileModelUnits = $file->getModelUnits($gsection);
 $file->fileModelMaterialsID = 2;
 
-print_r($gsection);
-echo $file->fileModelUnits;
+// print_r($gsection);
+// echo $file->fileModelUnits;
 $file->fileID = 1;
-$file->delete();
-$file->updateModelUnits();
+// $file->save();
+// $file->delete();
+// $file->updateModelUnits();
 //echo  $file->fileID."\n";
 //
 // $ts = new TStrength();
