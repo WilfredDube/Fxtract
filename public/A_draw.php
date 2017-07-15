@@ -12,6 +12,8 @@ $_POST['cool'] = 1;
 $_POST['process'] = 1;
 
 $fileID = trim($_GET['id']);
+
+// echo $_SESSION['projectid'];
 $query = "select filename from files where fileid=? LIMIT 1";
 $rows = $database->getRow($query, [$fileID]);
 // print_r(array_shift($rows));
@@ -87,10 +89,14 @@ $dim = $x->getDimensions($gsection);
 //
 $bends->insertBendFeatures($bendz, $dim);
 
+// var_dump($bendz);
 // print_r($edgetype[90]->Control_Points);
 //$xt->RBSplineSurface();
 $array = $edgetype;
 
+// echo $fileID;
+// $row = BendFeatures::find_feature_by_id($fileID);
+// print_r($row);
 // var_dump($edgetype);
 // echo $array;
 // $loops = ($xt->getLoops ());

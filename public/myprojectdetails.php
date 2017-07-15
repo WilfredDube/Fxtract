@@ -293,7 +293,7 @@ require('templates/footer.php');
 <footer>
 <div class="icon-bar">
 <a href="myprojects.php"><i class="fa fa-arrow-left"></i></a>
-<a href="<?php echo "myprojectview.php?id=".Project::getProjectFileID($id)?>"><i class="fa fa-eye"></i></a>
+<a href="<?php echo "myprojectview.php?id=".Project::getProjectFileID($id)."&pid=".$id; ?>"><i class="fa fa-eye"></i></a>
 <a class="active" href="#"><i class="fa fa-bars"></i></a>
 <!-- <a href="myprojects.php"><i class="fa fa-share"></i></a> -->
 <!-- <a href="#"><i class="fa fa-envelope"></i></a> -->
