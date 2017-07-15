@@ -98,15 +98,16 @@ class BendFeatures
       return $database->getAllRows("SELECT * FROM ".self::$table_name, []);
   }
 
-  public static function find_project_by_id($id=0)
+  public static function find_feature_by_id($id=0)
   {
       global $database;
-      $result_array = self::find_project_by_sql("SELECT bend_id FROM ".self::$table_name." WHERE projectid=? LIMIT 1", [$id]);
-      print_r($result_array);
-      return !empty($result_array) ? array_shift($result_array) : false;
+      $result_array = self::find_feature_by_sql("SELECT * FROM ".self::$table_name." WHERE fileid=?", [$id]);
+      // echo "::::::::::::::::KMCKDNDFJNJDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD";
+      // print_r($result_array);
+      return !empty($result_array) ? ($result_array) : false;
   }
 
-  public static function find_project_by_sql($sql="", $params = [])
+  public static function find_feature_by_sql($sql="", $params = [])
   {
       global $database;
       $result_set = $database->getAllRows($sql, $params);
