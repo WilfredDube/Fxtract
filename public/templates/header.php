@@ -188,13 +188,15 @@ if (!$user->is_logged_in()) {
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Features<span class="caret"></span></a>
             <ul class="dropdown-menu">
   <li><a href="a_index.php?id=<?php echo $fileID;?>">Extract Features</a></li>
-  <li role="separator" class="divider"></li>
-              <!--li><a href="uploadhistory.php">Extract Fields</a></li>
-  <li role="separator" class="divider"></li>
-              <li><a href="#">View Brep</a></li-->
-              <li>  <a href="#" onclick="load_modal()">Full Model Features</a></li>
-  <li role="separator" class="divider"></li>
-              <li>  <a href="#" onclick="load_modal2()">Face Adjacency Graph</a></li>
+              <li role="separator" class="divider"></li>
+              <li>  <a href="#" onclick="load_modal2()">Tool Selection</a></li>
+              <li role="separator" class="divider"></li>
+                          <!--li><a href="uploadhistory.php">Extract Fields</a></li>
+              <li role="separator" class="divider"></li>
+                          <li><a href="#">View Brep</a></li-->
+                          <li>  <a href="#" onclick="load_modal()">Full Model Features</a></li>
+              <li role="separator" class="divider"></li>
+                          <li>  <a href="#" onclick="load_modal2()">Face Adjacency Graph</a></li>
               <!--li role="separator" class="divider"></li>
               <li class="dropdown-header">Nav header</li>
               <li><a href="#">Separated link</a></li>
