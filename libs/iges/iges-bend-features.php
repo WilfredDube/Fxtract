@@ -138,7 +138,7 @@ class BendFeatures
     // - escape all values to prevent SQL injection
     $attributes = $this->sanitized_attributes();
 
-    $sql = "INSERT INTO ".self::$table_name." (";
+    $sql = "INSERT IGNORE INTO ".self::$table_name." (";
     $sql .= join(", ", array_keys($attributes));
     $sql .= ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 

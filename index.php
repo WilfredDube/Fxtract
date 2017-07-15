@@ -7,7 +7,7 @@ if( $user->is_logged_in() ){ header('Location: public/myprojects.php'); }
 //define page title
 $title = 'FXtract';
 
-//include header template
+//include header templated
 require('public/templates/indexheader.php');
 ?>
 

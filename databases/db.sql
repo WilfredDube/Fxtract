@@ -68,7 +68,7 @@ CREATE TABLE `features` (
 `featureid` INTEGER NOT NULL AUTO_INCREMENT,
 `projectid` INTEGER NOT NULL,
 `fileid` INTEGER NOT NULL,
-`bend_id` INTEGER NOT NULL,
+`bend_id` INTEGER NOT NULL unique,
 `face1_id` INTEGER NOT NULL,
 `face2_id` INTEGER NOT NULL,
 `angle` INTEGER NOT NULL,

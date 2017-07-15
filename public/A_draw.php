@@ -85,7 +85,7 @@ $bendz = $bends->bendTract($loops->getLoops());
 $x = new Extract();
 $dim = $x->getDimensions($gsection);
 //
-// $bends->insertBendFeatures($bendz, $dim);
+$bends->insertBendFeatures($bendz, $dim);
 
 // print_r($edgetype[90]->Control_Points);
 //$xt->RBSplineSurface();
