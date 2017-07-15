@@ -118,7 +118,7 @@ class Bend {
         // echo $bend->Bend_Length." ,Thickness : ".$thick." ,Units : ".$unit." ,Tensile Strength :".$TS." ,Bend Force :".$force."\n";
 
         // TODO: Make feature unique
-        $featureid = $_SESSION ['fileid'] . "" . $bend->Bend_ID . "" . $bend->Bend_Loop."";
+        $featureid = $_SESSION['projectid']."".$_SESSION ['fileid'] . "" . $bend->Bend_ID . "" . $bend->Bend_Loop."";
         $bend->Bend_ID .= trim ( $featureid );
         $bend->Bend_height = $height;
         $bend->Bend_force = $force;
@@ -129,8 +129,9 @@ class Bend {
 
         // print_r($bend);
 
-        $bendfeature = new BendFeatures($bend, 7, 7);
+        $bendfeature = new BendFeatures($bend, $_SESSION['projectid'], $_SESSION ['fileid']);
 
+        // var_dump($bendfeature);
         // print_r($bendfeature);
 
         $bendfeature->save();
