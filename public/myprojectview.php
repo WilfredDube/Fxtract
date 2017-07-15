@@ -14,7 +14,9 @@ if (!$user->is_logged_in()) {
 }
 
 $_POST['cool'] = 1;
+$pid = trim($_GET['pid']);
 
+$_SESSION['projectid'] = $pid;
 
 //define page title
 $title = 'My Projects';
@@ -50,6 +52,10 @@ $iges_file = array_shift($res);
 $title = 'Draw';
 //include header template
 require('templates/header.php');
+
+
+
+
 /*
 if (isset($_SESSION['BENDS'])){
 $obj = (($_SESSION['BENDS']));
@@ -58,6 +64,7 @@ $temp = (unserialize($obj));
 print_r($temp);
 }*/
 ?>
+
 <script src="assets/js/springy.js"></script>
 <script src="assets/js/springyui.js"></script>
 <link rel="stylesheet" href="style/draw.css">
@@ -107,36 +114,36 @@ ondoubleclick: function() { console.log("Hello!"); }
 // $i = 1;
 // $result = $database->getAllRows($query, [$fileID]);
 // if(isset($result))
-// foreach ($result as $row){
+foreach ($result as $row){
 // //$iges_file = $row['file_id'];
 // //if (($i % 2) == 0)
 // {
 ?>
-if (!face<?php //echo $row['face1_id'];?>)
-var face<?php //echo $row['face1_id'];?> = graph.newNode({label: 'Face <?php //echo $row['face1_id'];?>'});
-//var bend<?php //echo $row['bend_id'];?> = graph.newNode({label: 'Bend <?php //echo $row['bend_id'];?>'});
-if (!face<?php //echo $row['face2_id'];?>)
-var face<?php //echo $row['face2_id'];?> = graph.newNode({label: 'Face <?php //echo $row['face2_id'];?>'});
+if (!face<?php echo $row['face1_id'];?>)
+var face<?php echo $row['face1_id'];?> = graph.newNode({label: 'Face <?php echo $row['face1_id'];?>'});
+var bend<?php echo $row['bend_id'];?> = graph.newNode({label: 'Bend <?php echo $row['bend_id'];?>'});
+if (!face<?php echo $row['face2_id'];?>)
+var face<?php echo $row['face2_id'];?> = graph.newNode({label: 'Face <?php echo $row['face2_id'];?>'});
 <?php
 // }
-// ++$i;
-// }
+++$i;
+}
 ?>
 <?php
-// $i = 1;
-// foreach ($db->query($query) as $row){
-// //if (($i % 2) == 0)
-// {
-// $colours = array("#00A0B0","#6A4A3C","#CC333F","#EB6841", "#EDC951", "#7DBE3C", "#000000");
-// $key = array_rand($colours, 1);
+$result = BendFeatures::find_feature_by_id($fileID);
+foreach ($result as $row){
+if (($i % 2) == 0)
+{
+$colours = array("#00A0B0","#6A4A3C","#CC333F","#EB6841", "#EDC951", "#7DBE3C", "#000000");
+$key = array_rand($colours, 1);
 ?>
-graph.newEdge(face<?php// echo $row['face1_id'];?>, face<?php //echo $row['face2_id'];?>, {color: '<?php //echo $colours[$key];?>'});
-//graph.newEdge(face<?php //echo $row['face1_id'];?>, bend<?php //echo $row['bend_id'];?>, {color: '#00A0B0'});
-//graph.newEdge(face<?php //echo $row['face2_id'];?>, bend<?php //echo $row['bend_id'];?>, {color: '#00A0B0'});
+graph.newEdge(face<?php echo $row['face1_id'];?>, face<?php echo $row['face2_id'];?>, {color: '<?php echo $colours[$key];?>'});
+graph.newEdge(face<?php echo $row['face1_id'];?>, bend<?php echo $row['bend_id'];?>, {color: '#00A0B0'});
+graph.newEdge(face<?php echo $row['face2_id'];?>, bend<?php echo $row['bend_id'];?>, {color: '#00A0B0'});
 <?php
-// }
-// ++$i;
-// }
+}
+++$i;
+}
 ?>
 jQuery(function(){
 var springy = window.springy = jQuery('#springydemo').springy({
@@ -165,23 +172,23 @@ nodeSelected: function(node){
 <?php
 // $query = "SELECT * FROM bends  where file_id = '$fileID'";
 // $i = 1;
-// foreach ($db->query($query) as $row){
-// //$iges_file = $row['file_id'];
-// //if (($i % 2) == 0)
-// {
+foreach ($result as $row){
+// $iges_file = $row['file_id'];
+// if (($i % 2) == 0)
+{
 ?>
 
   <tr>
-     <td><?php //echo $row['bend_id']; //2;?></td>
-     <td><?php //echo $row['bend_radius'];?></td>
-     <td><?php //echo $row['bend_thickness'];?></td>
-     <td><?php //echo $row['bend_length'];?></td>
-     <td><?php //echo $row['angle']."&deg";?></td>
+     <td><?php echo $row['bend_id']; //2;?></td>
+     <td><?php echo $row['bend_radius'];?></td>
+     <td><?php echo $row['bend_thickness'];?></td>
+     <td><?php echo $row['bend_length'];?></td>
+     <td><?php echo $row['angle']."&deg";?></td>
   </tr>
 <?php
-// }
-// ++$i;
-// }
+}
+++$i;
+  }
 ?>
 </table>
 
@@ -198,20 +205,20 @@ nodeSelected: function(node){
 </tr>
 </thead>
 <?php
-// $i = 1;
-// foreach ($db->query($query) as $row){
-// //if (($i % 2) == 0)
-// {
+$i = 1;
+foreach ($result as $row){
+// if (($i % 2) == 0)
+{
 ?>
   <tr>
-     <td><?php //echo $row['face1_id'];?></td>
-     <td><?php //echo $row['bend_id'];//2;?></td>
-     <td><?php //echo $row['face2_id'];?></td>
+     <td><?php echo $row['face1_id'];?></td>
+     <td><?php echo $row['bend_id'];//2;?></td>
+     <td><?php echo $row['face2_id'];?></td>
   </tr>
 <?php
-// }
-// ++$i;
-// }
+}
+++$i;
+}
 ?>
 <span></span>
 </table>
