@@ -78,6 +78,7 @@ CREATE TABLE `features` (
 `bend_radius` FLOAT NOT NULL,
 `bend_height` FLOAT NOT NULL,
 `bending_force` FLOAT NOT NULL,
+`toolid` INTEGER NOT NULL DEFAULT 00000,
 PRIMARY KEY (`featureid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
