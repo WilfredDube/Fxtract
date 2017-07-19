@@ -21,6 +21,7 @@ $_SESSION['projectid'] = $pid;
 //define page title
 $title = 'My Projects';
 
+// print_r(Tool::findToolByAngle(90));
 //include header template
 require('templates/header.php');
 
@@ -265,25 +266,21 @@ data-dismiss="modal">&times;</button>
  </tr>
 </thead>
 <?php
-// $query = "SELECT * FROM bends  where file_id = '$fileID'";
-// $i = 1;
-// foreach ($db->query($query) as $row){
-// //$iges_file = $row['file_id'];
-// //if (($i % 2) == 0)
-// {
+if (isset($result) && is_array($result))
+foreach ($result as $row){
 ?>
 
    <tr>
-      <td><?php //echo $row['bend_id'];///2;?></td>
-      <td><?php //echo $row['bend_radius'];?></td>
-      <td><?php //echo $row['bend_thickness'];?></td>
-      <td><?php //echo $row['bend_length'];?></td>
-      <td><?php //echo $row['angle']."&deg";?></td>
-      <td><?php //echo $row['bend_height'];?></td>
-      <td><?php //echo $row['bending_force'];?></td>
+      <td><?php echo $row['bend_id'];///2;?></td>
+      <td><?php echo $row['bend_radius'];?></td>
+      <td><?php echo $row['bend_thickness'];?></td>
+      <td><?php echo $row['bend_length'];?></td>
+      <td><?php echo $row['angle']."&deg";?></td>
+      <td><?php echo $row['bend_height'];?></td>
+      <td><?php echo $row['bending_force'];?></td>
    </tr>
 <?php
-// }
+}
 // ++$i;
 // }
 ?>
@@ -304,70 +301,43 @@ data-dismiss="modal">Close</button>
      <div class="modal-header">
        <button type="button" class="close"
 data-dismiss="modal">&times;</button>
-       <b><h3 class="modal-title">Face Adjacency Graph</h3></b>
+       <b><h3 class="modal-title">Tool Selection</h3></b>
      </div>
      <div class="modal-body ">
-<script>
+     <table class = "table table-hover">
+<thead>
+<tr>
+<th>Bend ID</th>
+<th>Radius<?php echo "(mm)"; ?></th>
+<th>Angle(Degrees)</th>
+<th>Height<?php echo "(mm)"; ?></th>
+<th>Bending Force(N)</th>
+<th>Tool ID</th>
+</tr>
+</thead>
+<?php
+if (isset($result) && is_array($result))
+foreach ($result as $row){
+?>
 
-function drawAFG(){
-var graph = new Springy.Graph();
-/*
-var dennis = graph.newNode({
-label: 'Dennis',
-ondoubleclick: function() { console.log("Hello!"); }
-});*/
-
-<?php
-// $query = "SELECT * FROM bends  where file_id = '$fileID'";
-// $i = 1;
-// foreach ($db->query($query) as $row){
-// //$iges_file = $row['file_id'];
-// //if (($i % 2) == 0)
-// {
-?>
-if (!face<?php //echo $row['face1_id'];?>)
-var face<?php //echo $row['face1_id'];?> = graph.newNode({label: 'Face <?php //echo $row['face1_id'];?>'});
-var bend<?php //echo $row['bend_id'];?> = graph.newNode({label: 'Bend <?php //echo $row['bend_id'];///2;?>'});
-if (!face<?php// echo $row['face2_id'];?>)
-var face<?php //echo $row['face2_id'];?> = graph.newNode({label: 'Face <?php //echo $row['face2_id'];?>'});
-<?php
-// }
-// ++$i;
-// }
-?>
-<?php
-// $colours = array("#00A0B0","#6A4A3C","#CC333F","#EB6841", "#EDC951", "#7DBE3C", "#000000");
-//
-// $i = 1;
-// foreach ($db->query($query) as $row){
-// //if (($i % 2) == 0)
-// {
-// $key = array_rand($colours, 1);
-
-?>
-//graph.newEdge(face<?php //echo $row['face1_id'];?>, face<?php //echo $row['face2_id'];?>, {color: '#00A0B0'});
-graph.newEdge(face<?php //echo $row['face1_id'];?>, bend<?php //echo $row['bend_id'];?>, {color: '<?php //echo $colours[$key];?>'});
-<?php //$key = array_rand($colours, 1); ?>
-graph.newEdge(face<?php //echo $row['face2_id'];?>, bend<?php //echo $row['bend_id'];?>, {color: '<?php //echo $colours[$key];?>'});
-<?php
-// }
-// ++$i;
-// }
-?>
-jQuery(function(){
-var springy = window.springy = jQuery('#springyAFG').springy({
- graph: graph,
- nodeSelected: function(node){
-   console.log('Node selected: ' + JSON.stringify(node.data));
+<tr>
+ <td><?php echo $row['bend_id'];///2;?></td>
+ <td><?php echo $row['bend_radius'];?></td>
+ <td><?php echo $row['angle']."&deg";?></td>
+ <td><?php echo $row['bend_height'];?></td>
+ <td><?php echo $row['bending_force'];?></td>
+ <td><?php foreach (Tool::findToolByAngle($row['angle']) as $value) {
+   echo "<input value=\"".$value['toolid']."\" type=\"button\"></input>  ";
  }
-});
-});
-
+ ?></td>
+</tr>
+<?php
 }
 
-drawAFG();
-</script>
-   <canvas id="springyAFG" width="880" height="380"></canvas>
+// ++$i;
+// }
+?>
+</table></p>
      </div>
      <div class="modal-footer">
        <button type="button" class="btn btn-default btn-lg"
@@ -376,6 +346,31 @@ data-dismiss="modal">Close</button>
    </div>
  </div>
 </div>
+<div id="content">
+    <h1>Content of row 1</h1>
+    <table cellpadding="0" cellspacing="0" border="1px" bordercolor="#bababb">
+    	<tr>
+            <th>head 1</th>
+            <th>head 2</th>
+            <th>head 3</th>
+            <th>head 4</th>
+        </tr>
+        <tr>
+            <td>cell 1</td>
+            <td>cell 2</td>
+            <td>cell 3</td>
+            <td>cell 4</td>
+        </tr>
+    </table>
+	<p>Lorem Ipsum is simply dummy text of the printing and typesetting </p>
+</div>
+<script>
+$(document).delegate('input[type="button"]','click',function(){
+	$('[colspan="5"]').parent('tr').remove();
+	$(this).parents('tr').after('<tr/>').next().append('<td colspan="5"/>').children('td').append('<div/>').children().css('background','#ffffff').html($('#content').html());
+});
+
+</script>
 <?php
 require('templates/footer.php');
 ?>

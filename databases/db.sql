@@ -15,7 +15,7 @@ CREATE TABLE `members` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 CREATE TABLE `tool_library` (
-`toolid` INTEGER NOT NULL AUTO_INCREMENT,
+`toolid` INTEGER(3) unsigned zerofill NOT NULL AUTO_INCREMENT,
 `toolname` VARCHAR(50) NOT NULL unique,
 `toolangles` VARCHAR(200) NOT NULL,
 `toolmaterials` VARCHAR(200) NOT NULL DEFAULT "ALL",
@@ -24,8 +24,42 @@ CREATE TABLE `tool_library` (
 PRIMARY KEY (`toolid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+('Standard Die','90', 'This is the basic tool   applied   in   bending   for simple v- bends and radius bend');
+INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+('Air Bend Die','85', 'There is no need to change any equipment or dies to obtain different bending angles because the bend angles are determined by punch stroke.');
+INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+('Acute Angle Die','30,26,27,28,29,31,32,33,34,35,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60', 'Acute angle dies used for air bending from very shallow angles to 30degree angles. The angle formed depends on the depth of the to which the upper die enters the lower die. Acute angle die are commonly used to perform hems');
+INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+('Bottoming Die','90', 'Used for making accurate bends with relatively sharp inside radii in comparatively light gauge material. Inclided angle is 90 degree both upper and lower.');
+INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+('Gooseneck Die','30,85,90,88', 'Used for making channels or special shapes with which a straight edeged die would interfere.');
+INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+('Flattening Die','0', 'Flattening dies are used for hemming or flattening acute angle bends.');
+INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+('Four Way Die','85', 'They are useful for jobbing where changes in die opening are frequently desired');
+INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+('U bending dies','U shapes', 'Channeling bending');
+select concat('TL', toolid) as toolid, toolname from tool_library;
+-- INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+-- ('','', '');
+-- INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+-- ('','', '');
+-- INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+-- ('','', '');
+-- INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+-- ('','', '');
+-- INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+-- ('','', '');
+-- INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+-- ('','', '');
+-- INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+-- ('','', '');
+-- INSERT INTO `tool_library` (toolname,toolangles,toolcaption) VALUES
+-- ('','', '');
+
 CREATE TABLE `machine_library` (
-`machineid` int(11) NOT NULL AUTO_INCREMENT,
+`machineid` INTEGER(4) unsigned zerofill NOT NULL AUTO_INCREMENT,
 `machinename` VARCHAR(50) NOT NULL unique,
 `machinedetails` VARCHAR(200) NOT NULL,
 `machineidle` boolean not null default 0,
@@ -33,7 +67,7 @@ PRIMARY KEY (`machineid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 CREATE TABLE `projects` (
-`projectid` int(11) NOT NULL AUTO_INCREMENT,
+`projectid` INTEGER(3) unsigned zerofill NOT NULL AUTO_INCREMENT,
 `projectname` VARCHAR(50) NOT NULL unique,
 `projectdescription` VARCHAR(200) NOT NULL,
 `projectmaterialid` INTEGER NOT NULL,

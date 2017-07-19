@@ -22,10 +22,13 @@ class Tool {
     return $result_set;
   }
 
-	public function findToolByAngle($angle) {
+	public static function findToolByAngle($angle) {
 		global $database;
-		$query = "SELECT * FROM ".self::$table_name."WHERE toolangles like '%?%'";
-		$result_set = $database->getAllRows($query, [$angle]);
+		// select concat('TL', toolid) as toolid, toolname from tool_library;
+		$query = "SELECT concat('TL', toolid) as toolid FROM ".self::$table_name." WHERE toolangles like \"%$angle%\"";
+		// echo "$query";
+		// echo "$angle";
+		$result_set = $database->getAllRows($query, []);
 		return $result_set;
 	}
 
@@ -67,5 +70,8 @@ class Tool {
       echo "Successfully deleted";
   }
 }
+
+$tool = new Tool();
+
 
 ?>
