@@ -5,7 +5,11 @@ require_once('../includes/initialize.php');
 //ini_set('display_errors','on');
 
 //if logged in redirect to members page
-if(!$user->is_logged_in()){unset($_POST['cool']);unset($_POST['process']); header('Location: login.php');  }
+if(!$user->is_logged_in()){
+  unset($_POST['cool']);
+  unset($_POST['process']);
+  header('Location: login.php');
+}
 
 $_POST['pro'] = 1;
 $_POST['cool'] = 1;

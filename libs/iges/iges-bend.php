@@ -24,12 +24,14 @@ class Bend {
     $x = new Extract ();
     $fx = new Computation ();
     $flag = false;
+    $bends = array();
 
     $loops = $face_list;
     $faces = $face_list;
 
     $p = 0;
 
+    if ($face_list != null)
     foreach ( $loops as $loop )
     {
       $face1 = null;
@@ -37,6 +39,8 @@ class Bend {
       $bendE = null;
 
       $i = 0;
+      // var_dump($loop->External_Loop->Edge_List);
+      if (isset($loop->External_Loop->Edge_List) && is_array($loop->External_Loop->Edge_List))
       foreach ( $loop->External_Loop->Edge_List as $bedl ) {
         if ($bedl->Edge_Type == "Line" && $loop->Bend_ID != - 1) {
 
@@ -80,13 +84,14 @@ class Bend {
           self::$bends [$p]->Angle = $angle;
           self::$bends [$p]->Bend_Loop = $loop->External_Loop->Loop_ID;
           self::$bends [$p]->Bend_Length = $bendLength;
-          $_SESSION['bends'][$p] = self::$bends [$p];
+          $bends[$p] = self::$bends [$p];
 
           ++ $p;
         }
       }
     }
 
+    $_SESSION['bends'] = $bends;
     return $_SESSION['bends'];
   }
 

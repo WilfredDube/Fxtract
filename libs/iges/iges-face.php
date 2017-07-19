@@ -76,7 +76,7 @@ class Face {
         $face->External_Loop = $loops [$ppentry_ploop];
         self::$face_list [$counter] = new Face ();
         self::$face_list [$counter] = $face;
-        $_SESSION['facelist'][$counter] = self::$face_list[$counter];
+        // $_SESSION['facelist'][$counter] = self::$face_list[$counter];
       }
     }
 
@@ -87,7 +87,7 @@ class Face {
   }
 
   public function getFaceList() {
-    return $_SESSION['facelist'];
+    return self::$face_list;//$_SESSION['facelist'];
   }
 }
 

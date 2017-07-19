@@ -59,6 +59,11 @@ class Loop {
           $j += 4;
         }
 
+        if ($Edge_List == null) {
+          echo "string";
+          continue;
+        }
+
         $this->loops [$value->PointerData] = new Loop ();
         $this->loops [$value->PointerData]->Edge_List = array ();
         $this->loops [$value->PointerData]->Edge_List = $Edge_List;
@@ -88,6 +93,7 @@ class Loop {
     }
 
     self::$face = new Face();
+    // var_dump($edge->getEdgeList());
     $rbsurface = self::$face->facetract($dsection, $psection, $this->loops, $vertexlist, $edge->getEdgeList());
 
   }

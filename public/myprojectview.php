@@ -36,7 +36,11 @@ require('templates/header.php');
 //ini_set('display_errors','on');
 
 //if logged in redirect to members page
-if(!$user->is_logged_in()){unset($_POST['cool']);unset($_POST['process']); header('Location: login.php');  }
+if(!$user->is_logged_in()){
+  unset($_POST['cool']);
+  unset($_POST['process']);
+  header('Location: login.php');
+}
 /*
 $_POST['pro'] = 1;*/
 $_POST['cool'] = 1;
@@ -172,6 +176,8 @@ nodeSelected: function(node){
 <?php
 // $query = "SELECT * FROM bends  where file_id = '$fileID'";
 // $i = 1;
+// var_dump($result);
+if (isset($result) && is_array($result))
 foreach ($result as $row){
 // $iges_file = $row['file_id'];
 // if (($i % 2) == 0)
@@ -206,6 +212,7 @@ foreach ($result as $row){
 </thead>
 <?php
 $i = 1;
+if (isset($result) && is_array($result))
 foreach ($result as $row){
 // if (($i % 2) == 0)
 {

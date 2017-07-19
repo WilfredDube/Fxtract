@@ -1,5 +1,15 @@
 <?php
 
+function __autoload($class_name) {
+	$class_name = strtolower($class_name);
+  $path = IGES_LIB_PATH.DS."iges-{$class_name}.php";
+  if(file_exists($path)) {
+    require_once($path);
+    echo "string";
+  } else {
+		die("The file {$class_name}.php could not be found.");
+	}
+}
 
 require_once (IGES_LIB_PATH.'iges-tensile-strength.php');
 require_once (IGES_LIB_PATH.'iges-bend.php');
