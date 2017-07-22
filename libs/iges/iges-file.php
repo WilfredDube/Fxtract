@@ -120,7 +120,7 @@ class IgesFile
             $this->temp_path  = $file['tmp_name'];
             $this->fileuserid = $_SESSION['user']['memberID'];
             $this->fileprojectid = $file['fileprojectid'];
-            $this->filename   = basename($file['name']);
+            $this->filename   = $file['fileprojectid']."_".basename($file['name']);
             $this->filetype   = $file['type'];
             $this->filesize   = $file['size'];
             $this->filecaption = $file['filecaption'];
