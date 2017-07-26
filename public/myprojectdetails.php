@@ -196,11 +196,11 @@ section .push {height:4000px;}
     <div class="col-sm-3">
       <div class="col-sm-2"></div>
       <div class="col-sm-1">
-        <?php if (Project::getProjectFileID($id) == 0) { ?>
+        <?php //if (Project::getProjectFileID($id) == 0) { ?>
       <button type="button" class="btn btn-danger btn-circle btn-lg" id="myBtn"><i class="fa fa-plus"></i></button>
-      <?php } else { ?>
-        <button type="button" class="btn btn-primary btn-circle btn-lg" id="myprocess"><i class="fa fa-play"></i></button>
-      <?php } ?>
+      <?php //} else { ?>
+        <!-- <button type="button" class="btn btn-primary btn-circle btn-lg" id="myprocess"><i class="fa fa-play"></i></button> -->
+      <?php //} ?>
       </div>
     </div>
    </div>
@@ -267,7 +267,9 @@ section .push {height:4000px;}
         <!-- <div class="col-xscol-sm-3 sidebar-offcanvas" id="sidebar"> -->
           <div class="list-group">
             <a href="#" class="list-group-item active">Model Files</a>
-            <a href="#" class="list-group-item"><?php echo IgesFile::getProjectFile($id)['filename']; ?></a>
+            <?php foreach (IgesFile::getProjectFile($id) as $row) { ?>
+            <a href="#" class="list-group-item"><?php echo $row['filename']; ?></a>
+            <?php }  ?>
           </div>
         <!-- </div><!--/.sidebar-offcanvas-->
       </div><!--/row-->

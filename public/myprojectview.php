@@ -68,6 +68,7 @@ $obj = (($_SESSION['BENDS']));
 $temp = (unserialize($obj));
 print_r($temp);
 }*/
+$result = BendFeatures::find_feature_by_id($fileID);
 ?>
 
 <script src="assets/js/springy.js"></script>
@@ -99,69 +100,19 @@ print_r($temp);
   </div-->
 
 <div class = "panel panel-default">
-<div class = "panel-heading">
-  <h3 class = "panel-title">
-     <b>Face Adjacency Graph</b>
-  </h3>
-</div>
-
 <div class = "panel-body">
-<script>
-var graph = new Springy.Graph();
-/*
-var dennis = graph.newNode({
-label: 'Dennis',
-ondoubleclick: function() { console.log("Hello!"); }
-});*/
+  <div>
+    <!-- <div class="col-xscol-sm-3 sidebar-offcanvas" id="sidebar"> -->
+      <div class="list-group">
+        <a href="#" class="list-group-item active">Model Files</a>
+        <?php foreach (IgesFile::getProjectFile($pid) as $row) { ?>
+        <a href="<?php echo "myprojectview.php?id=".$row['fileid']."&pid=".$pid; ?>" class="list-group-item"><?php echo $row['filename']; ?></a>
+        <?php }  ?>
+      </div>
+  </div>
+</div>
+</div>
 
-<?php
-// $query = "SELECT * FROM features  where fileid = ?";
-// $i = 1;
-// $result = $database->getAllRows($query, [$fileID]);
-// if(isset($result))
-foreach ($result as $row){
-// //$iges_file = $row['file_id'];
-// //if (($i % 2) == 0)
-// {
-?>
-if (!face<?php echo $row['face1_id'];?>)
-var face<?php echo $row['face1_id'];?> = graph.newNode({label: 'Face <?php echo $row['face1_id'];?>'});
-var bend<?php echo $row['bend_id'];?> = graph.newNode({label: 'Bend <?php echo $row['bend_id'];?>'});
-if (!face<?php echo $row['face2_id'];?>)
-var face<?php echo $row['face2_id'];?> = graph.newNode({label: 'Face <?php echo $row['face2_id'];?>'});
-<?php
-// }
-++$i;
-}
-?>
-<?php
-$result = BendFeatures::find_feature_by_id($fileID);
-foreach ($result as $row){
-if (($i % 2) == 0)
-{
-$colours = array("#00A0B0","#6A4A3C","#CC333F","#EB6841", "#EDC951", "#7DBE3C", "#000000");
-$key = array_rand($colours, 1);
-?>
-graph.newEdge(face<?php echo $row['face1_id'];?>, face<?php echo $row['face2_id'];?>, {color: '<?php echo $colours[$key];?>'});
-graph.newEdge(face<?php echo $row['face1_id'];?>, bend<?php echo $row['bend_id'];?>, {color: '#00A0B0'});
-graph.newEdge(face<?php echo $row['face2_id'];?>, bend<?php echo $row['bend_id'];?>, {color: '#00A0B0'});
-<?php
-}
-++$i;
-}
-?>
-jQuery(function(){
-var springy = window.springy = jQuery('#springydemo').springy({
-graph: graph,
-nodeSelected: function(node){
-  console.log('Node selected: ' + JSON.stringify(node.data));
-}
-});
-});
-</script>
-  <canvas id="springydemo" width="330" height="300"></canvas>
-</div>
-</div>
 <div class = "panel panel-default">
 <div class = "panel-heading"><b>Bend Features</b></div>
 <table class = "table table-hover">
@@ -194,7 +145,7 @@ foreach ($result as $row){
   </tr>
 <?php
 }
-++$i;
+// ++$i;
   }
 ?>
 </table>

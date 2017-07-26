@@ -99,7 +99,7 @@ class IgesFile
     $query = 'SELECT * FROM files WHERE fileprojectid=?';
     $res = $database->getAllRows($query, [$id]);
 
-    return (isset($res)) ? array_shift($res) : false;
+    return (isset($res)) ? ($res) : false;
   }
 
   // Pass in $_FILE(['uploaded_file']) as an argument
