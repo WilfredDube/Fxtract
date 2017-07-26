@@ -267,7 +267,9 @@ section .push {height:4000px;}
         <!-- <div class="col-xscol-sm-3 sidebar-offcanvas" id="sidebar"> -->
           <div class="list-group">
             <a href="#" class="list-group-item active">Model Files</a>
-            <?php foreach (IgesFile::getProjectFile($id) as $row) { ?>
+            <?php
+            $qres = IgesFile::getProjectFile($id);
+            foreach ($qres as $row) { ?>
             <a href="#" class="list-group-item"><?php echo $row['filename']; ?></a>
             <?php }  ?>
           </div>
@@ -295,7 +297,12 @@ require('templates/footer.php');
 <footer>
 <div class="icon-bar">
 <a href="myprojects.php"><i class="fa fa-arrow-left"></i></a>
-<a href="<?php echo "myprojectview.php?id=".Project::getProjectFileID($id)."&pid=".$id; ?>"><i class="fa fa-eye"></i></a>
+<?php //var_dump($qres);
+if (!empty($qres)) {?>
+  <a href="<?php echo "myprojectview.php?id=".Project::getProjectFileID($id)."&pid=".$id; ?>"><i class="fa fa-eye"></i></a>
+<?php } else { ?>
+  <a href="#"><i class="fa fa-eye"></i></a>
+<?php }  ?>
 <a class="active" href="#"><i class="fa fa-bars"></i></a>
 <!-- <a href="myprojects.php"><i class="fa fa-share"></i></a> -->
 <!-- <a href="#"><i class="fa fa-envelope"></i></a> -->
