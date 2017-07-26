@@ -166,13 +166,21 @@ if (!$user->is_logged_in()) {
            <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projects <span class="caret"></span></a>
             <ul class="dropdown-menu">
-            <?php if (isset($_POST['cool'])) {?>
+            <?php if (isset($_POST['cool'])) {
+              $res = Project::find_all();
+
+              foreach ($res as $value) {
+              ?>
   <!-- <li><a id="myBtn" href="">New Project</a></li> -->
   <!-- <li role="separator" class="divider"></li> -->
   <!-- <li><a href="modelupload.php">New Model</a></li> -->
   <!-- <li role="separator" class="divider"></li> -->
-  <?php }?>
-              <li><a href="myprojects.php">My Projects</a></li>
+  <li><a href='<?php echo "myprojectdetails.php?id=".$value['projectid']."&mid=".$value['projectmaterialid']; ?>'><?php echo $value['projectname']; ?></a></li>
+  <li role="separator" class="divider"></li>
+  <?php        # code...
+      }}?>
+      <li><a href="myprojects.php">All Projects</a></li>
+
               <!--li><a href="#">View Files</a></li>
               <li><a href="#">Features</a></li>
 
