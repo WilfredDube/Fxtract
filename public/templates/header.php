@@ -175,7 +175,7 @@ if (!$user->is_logged_in()) {
   <!-- <li role="separator" class="divider"></li> -->
   <!-- <li><a href="modelupload.php">New Model</a></li> -->
   <!-- <li role="separator" class="divider"></li> -->
-  <li><a href='<?php echo "myprojectdetails.php?id=".$value['projectid']."&mid=".$value['projectmaterialid']; ?>'><?php echo $value['projectname']; ?></a></li>
+  <li><a href='<?php echo "myprojectdetails.php?pid=".$value['projectid']."&mid=".$value['projectmaterialid']; ?>'><?php echo $value['projectname']; ?></a></li>
   <li role="separator" class="divider"></li>
   <?php        # code...
       }}?>

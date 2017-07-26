@@ -48,7 +48,7 @@ $_POST['cool'] = 1;
 $_POST['process'] = 1;
 
 // TOD: Fix lines below
-$fileID = trim($_GET['id']);
+$fileID = trim($_GET['fid']);
 // echo $fileID;
 $query = "select filename from files where fileid=? LIMIT 1";
 
@@ -106,7 +106,7 @@ $result = BendFeatures::find_feature_by_id($fileID);
       <div class="list-group">
         <a href="#" class="list-group-item active">Model Files</a>
         <?php foreach (IgesFile::getProjectFile($pid) as $row) { ?>
-        <a href="<?php echo "myprojectview.php?id=".$row['fileid']."&pid=".$pid; ?>" class="list-group-item"><?php echo $row['filename']; ?></a>
+        <a href="<?php echo "myprojectview.php?fid=".$row['fileid']."&pid=".$pid; ?>" class="list-group-item"><?php echo $row['filename']; ?></a>
         <?php }  ?>
       </div>
   </div>

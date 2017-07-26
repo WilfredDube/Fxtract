@@ -11,7 +11,7 @@ if (!$user->is_logged_in()) {
 }
 
 $_POST['cool'] = 1;
-$id = trim($_GET['id']);
+$id = trim($_GET['pid']);
 $mid = trim($_GET['mid']);
 
 if (getProject($id) == false)
@@ -36,7 +36,7 @@ if(isset($_POST['upload'])) {
 
   if ($igesfile->attach_file($_FILES['upload_file'])) {
     $igesfile->save();
-    header('Location: myprojectdetails.php?id='.$id.'&mid='.$mid);
+    header('Location: myprojectdetails.php?pid='.$id.'&mid='.$mid);
   } else {
 	   $error[] = 'Select file to upload.';
   }
@@ -299,7 +299,7 @@ require('templates/footer.php');
 <a href="myprojects.php"><i class="fa fa-arrow-left"></i></a>
 <?php //var_dump($qres);
 if (!empty($qres)) {?>
-  <a href="<?php echo "myprojectview.php?id=".Project::getProjectFileID($id)."&pid=".$id; ?>"><i class="fa fa-eye"></i></a>
+  <a href="<?php echo "myprojectview.php?fid=".Project::getProjectFileID($id)."&pid=".$id; ?>"><i class="fa fa-eye"></i></a>
 <?php } else { ?>
   <a href="#"><i class="fa fa-eye"></i></a>
 <?php }  ?>

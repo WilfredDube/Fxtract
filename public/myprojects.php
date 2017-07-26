@@ -190,7 +190,7 @@ require('templates/header.php');
                 echo"<td>".($row['projectcreationdate'])."</td>";
                 echo "<td>
                   <div class=\"btn-group\" role=\"group\" aria-label=\"\">
-                    <button type=\"button\" class=\"btn btn-default\" onclick=\"window.location.href='myprojectdetails.php?id=".$row['projectid']."&mid=".$row['projectmaterialid']."'\"><span class=\"fa fa-eye\"></span></button>
+                    <button type=\"button\" class=\"btn btn-default\" onclick=\"window.location.href='myprojectdetails.php?pid=".$row['projectid']."&mid=".$row['projectmaterialid']."'\"><span class=\"fa fa-eye\"></span></button>
                     <button type=\"button\" class=\"btn btn-default\" onclick=\"window.location.href='#'\"><span class=\"fa fa-edit\"></span></button>
                     <button type=\"button\" class=\"btn btn-default\" onclick=\"window.location.href='?delete_id=".$row['projectid']."'\"><span class=\"fa fa-trash\"></span></button>
                   </div>
