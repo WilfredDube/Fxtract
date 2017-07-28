@@ -10,12 +10,12 @@ class Face {
   var $Internal_Loop_Count;
   var $Internal_Loop; // ARRAY
 
-  static $face_list;
+  private $face_list;
   static $shell;
   static $surface;
 
   function __construct() {
-    self::$face_list = array();
+    $this->face_list = array();
     $this->Internal_Loop = array();
     self::$shell = new Shell();
     self::$surface = new RBSplineSurface();
@@ -30,11 +30,15 @@ class Face {
     static $p = 1;
     $f = 1;
 
+    // var_dump($edgeList);
+    $i = 1;
     foreach ( $dsection as $value )
     {
+
       if ($value->EntityType == 510)
       {
-
+        // echo $i."<br>";
+        // var_dump($value);
         $pentry = $psection [$value->PointerData];
 
         $arr = $xtract->multiexplode ( array (
@@ -74,20 +78,25 @@ class Face {
         }
 
         $face->External_Loop = $loops [$ppentry_ploop];
-        self::$face_list [$counter] = new Face ();
-        self::$face_list [$counter] = $face;
+        $this->face_list [$counter] = new Face ();
+        $this->face_list [$counter] = $face;
         // $_SESSION['facelist'][$counter] = self::$face_list[$counter];
+      //   echo $i."<br>";
+      // var_dump($face);
+        $i++;
       }
+
+
     }
 
-    if (isset ( self::$face_list ))
-    ;
+    if (isset ( $this->face_list ))
+     ;//var_dump($this->face_list);
 
-    self::$shell->createShell($vertexlist, $edgeList, $loops, self::$face_list);
+    // self::$shell->createShell($vertexlist, $edgeList, $loops, self::$face_list);
   }
 
   public function getFaceList() {
-    return self::$face_list;//$_SESSION['facelist'];
+    return $this->face_list;//$_SESSION['facelist'];
   }
 }
 
