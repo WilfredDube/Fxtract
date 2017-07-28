@@ -70,20 +70,27 @@ $edgetype = array();
 $rbspline = new RBSplineCurve();
 $edgetype = $rbspline->rbsplineCurveTract($dsection, $psection);//, $edgetype);
 
+// var_dump($edgetype);
+
 // Extraction of vertextes to create the vertex list
 $vt = new Vertex();
-$vt->vertract($dsection, $psection);
-$vtlist = $vt->getVertexList();
+$vtlist = $vt->vertract($dsection, $psection);
+// $vtlist = $vt->getVertexList();
+
+// if (!empty($vlist))
+// var_dump($vtlist);
 
 // var_dump($edgetype);
 $edge = new Edge();
 $edgelist = $edge->edgetract($dsection, $psection, $edgetype, $vt);
 
-// print_r($edgelist);
+// var_dump($edgelist);
 //($edge->getEdgeList());
 $loops = new Loop();
 $loops->looptract($dsection, $psection, $edge, $vtlist);
 
+// var_dump($loops);
+// var_dump($loops->getLoops());
 // print_r($loops);
 $bends = new Bend();
 $bendz = $bends->bendTract($loops->getLoops());
@@ -135,10 +142,10 @@ foreach ($edget as $edgt)
 			body {
 				width: 50%;
 				background: #B3B3B3;
-				bottom: 10px;
+				/*bottom: 10px;*/
 				cursor: crosshair;
-				//margin-top: 5px;
-				//margin-left: 5px;
+				/*//margin-top: 5px;
+				//margin-left: 5px;*/
 			}
 			#info {
 				position: absolute;

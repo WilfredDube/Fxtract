@@ -195,7 +195,7 @@ if (!$user->is_logged_in()) {
                          <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Features<span class="caret"></span></a>
             <ul class="dropdown-menu">
-  <li><a href="a_index.php?id=<?php echo $fileID;?>">Extract Features</a></li>
+  <li><a href="#">Extract Features</a></li>
               <li role="separator" class="divider"></li>
                           <!--li><a href="uploadhistory.php">Extract Fields</a></li>
               <li role="separator" class="divider"></li>

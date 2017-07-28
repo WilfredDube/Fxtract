@@ -6,7 +6,7 @@ class Vertex extends Point {
   private static $vertexlist;
 
   function __construct () {
-
+    // self::$vertexlist = array();
   }
 
   // Extraction of vertextes from the vertex list
@@ -19,7 +19,7 @@ class Vertex extends Point {
     {
       if ($value->EntityType == 502)
       {
-
+        // var_dump($dsection);
         $pentry = $psection [$value->PointerData];
 
         $arr = $xtract->multiexplode ( array (
@@ -65,10 +65,13 @@ class Vertex extends Point {
           self::$vertexlist [$id]->Vertex_Count = $arr [1];
           self::$vertexlist [$id]->Vertex = $vt;
 
+          $vertexlist [$id] = self::$vertexlist [$id];
           $j = $j + 2;
         }
       }
     }
+
+    return $vertexlist;
   }
 
   public function getVertexList() {

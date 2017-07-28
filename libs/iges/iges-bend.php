@@ -29,6 +29,7 @@ class Bend {
     $loops = $face_list;
     $faces = $face_list;
 
+    // var_dump($face_list);
     $p = 0;
 
     if ($face_list != null)
@@ -43,7 +44,8 @@ class Bend {
       if (isset($loop->External_Loop->Edge_List) && is_array($loop->External_Loop->Edge_List))
       foreach ( $loop->External_Loop->Edge_List as $bedl ) {
         if ($bedl->Edge_Type == "Line" && $loop->Bend_ID != - 1) {
-
+          // echo $i."<br>";
+          // var_dump($bedl);
           $i ++;
 
           $bendE = $bedl;
@@ -90,6 +92,8 @@ class Bend {
         }
       }
     }
+
+    // var_dump($bends);
 
     $_SESSION['bends'] = $bends;
     return $_SESSION['bends'];

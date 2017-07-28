@@ -96,9 +96,11 @@ class Loop {
     // var_dump($edge->getEdgeList());
     $rbsurface = self::$face->facetract($dsection, $psection, $this->loops, $vertexlist, $edge->getEdgeList());
 
+    // var_dump($this->loops);
   }
 
   public function getLoops() {
+    // var_dump(self::$face->getFaceList());
     return self::$face->getFaceList();
   }
 }
