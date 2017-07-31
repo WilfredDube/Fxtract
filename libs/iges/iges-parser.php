@@ -153,6 +153,7 @@ class Parser {
     // echo $etype."dsdsw";
 
     switch ($etype) {
+      // Shell Entity
       case 514:                       /* only layers (514)*/
       $this->entity [$emark] = new Entity ();
       $this->entity [$emark]->EntityType = $etype; /* Entity Type */
@@ -189,6 +190,7 @@ class Parser {
       // $emark++;
       // echo $emark;
       break;
+      // Face Entity
       case 510:                       /* only layers (510)*/
       $this->entity [$emark] = new Entity ();
       $this->entity [$emark]->EntityType = $etype; /* Entity Type */
@@ -225,6 +227,7 @@ class Parser {
       // $emark++;
       // echo $emark;
       break;
+      // Loop Entity
       case 508:                       /* only layers (508)*/
       $this->entity [$emark] = new Entity ();
       $this->entity [$emark]->EntityType = $etype; /* Entity Type */
@@ -261,6 +264,7 @@ class Parser {
       // $emark++;
       // echo $emark;
       break;
+      // Edge Entity
       case 504:                       /* only layers (504)*/
       $this->entity [$emark] = new Entity ();
       $this->entity [$emark]->EntityType = $etype; /* Entity Type */
@@ -297,6 +301,7 @@ class Parser {
       // $emark++;
       // echo $emark;
       break;
+      // Vertex Entity
       case 502:                       /* only layers (502)*/
       $this->entity [$emark] = new Entity ();
       $this->entity [$emark]->EntityType = $etype; /* Entity Type */
@@ -333,6 +338,7 @@ class Parser {
       // $emark++;
       // echo $emark;
       break;
+      // Multi-purpose Entity
       case 406:                       /* only layers (406)*/
       $this->entity [$emark] = new Entity ();
       $this->entity [$emark]->EntityType = $etype; /* Entity Type */
@@ -369,6 +375,7 @@ class Parser {
       // $emark++;
       // echo $emark;
       break;
+      // Color Entity
       case 314:                       /* only layers (314)*/
       $this->entity [$emark] = new Entity ();
       $this->entity [$emark]->EntityType = $etype; /* Entity Type */
@@ -405,6 +412,7 @@ class Parser {
       // $emark++;
       // echo $emark;
       break;
+      // RBS Surface Entity
       case 128:                       /* only layers (128)*/
       $this->entity [$emark] = new Entity ();
       $this->entity [$emark]->EntityType = $etype; /* Entity Type */
@@ -445,6 +453,7 @@ class Parser {
       // $emark++;
       // echo $emark;
       break;
+      // RBS Curve Entity
       case 126:                       /* only layers (126)*/
       $this->entity [$emark] = new Entity ();
       $this->entity [$emark]->EntityType = $etype; /* Entity Type */
@@ -485,6 +494,7 @@ class Parser {
       // $emark++;
       // echo $emark;
       break;
+      // Solid B-Rep Object Entity
       case 186:                       /* only layers (186)*/
       $this->entity [$emark] = new Entity ();
       $this->entity [$emark]->EntityType = $etype; /* Entity Type */
@@ -567,6 +577,7 @@ class Parser {
       // $emark++;
       // echo $emark;
       break;
+      // Line Entity
       case 110:                       /* only layers (110)*/
       $this->entity [$emark] = new Entity ();
       // System.out.println($etype);
