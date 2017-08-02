@@ -107,7 +107,17 @@ class Bend {
 
     if (isset ( $Bends )) {
       foreach ( $Bends as $bend ) {
-        $thick = 0.5;
+        $shell = Shell::getShell();
+
+        foreach ($shell->Face_List as $value) {
+          if ($value->Surface_Type == "Plane Surface") {
+            $thick = $value->Thickness;
+            $dim = $value->Dimension;
+            break;
+          }
+        }
+
+// echo "$dim";
         $rads = array (
           2,
           3,
@@ -116,6 +126,7 @@ class Bend {
         );
         $key = array_rand ( $rads, 1 );
 
+        // echo $thick;
         $height = 2.5 * $thick * $rads [$key];
 
         $query = "SELECT filemodelmaterialid from files where fileid=?";
@@ -132,6 +143,7 @@ class Bend {
         $bend->Bend_ID .= trim ( $featureid );
         $bend->Bend_height = $height;
         $bend->Bend_force = $force;
+        $bend->Bend_Unit = $dim;
         $bend->Bend_Thickness = $thick;
         $bend->Bend_Radius = $rads [$key];
 

@@ -47,6 +47,16 @@ class Computation {
     return $a;
   }
 
+  private function computeCrossProduct($a, $b) {
+    $normal = new Vertex ();
+
+    $normal->x = ($a->y * $b->z) - ($a->z * $b->y);
+    $normal->y = - (($a->x * $b->z) - ($b->x * $a->z));
+    $normal->z = ($a->x * $b->y) - ($b->x * $a->y); /* */
+
+    return $normal;
+  }
+
   public function computeBendLength($line) {
     $a = new Vertex ();
 
@@ -57,15 +67,6 @@ class Computation {
     return $this->computeEuclideanNorm ( $a );
   }
 
-  private function computeCrossProduct($a, $b) {
-    $normal = new Vertex ();
-
-    $normal->x = ($a->y * $b->z) - ($a->z * $b->y);
-    $normal->y = - (($a->x * $b->z) - ($b->x * $a->z));
-    $normal->z = ($a->x * $b->y) - ($b->x * $a->y); /* */
-
-    return $normal;
-  }
 
   private function computeEuclideanNorm($vector) {
     $A = $vector->x * $vector->x;
@@ -100,6 +101,27 @@ class Computation {
     $angle = rad2deg ( $radian );
 
     return $angle;
+  }
+
+  public function computeThickness($edgelist)
+  {
+    $this->loop = $edgelist;
+    reset ( $this->loop );
+    $arr = array();
+    // $edge1 = $this->loop [key ( $this->loop )];
+    // $edge2 = null;
+
+    foreach ( $this->loop as $edge )
+    {
+      $arr[]= $this->computeBendLength($edge);
+    }
+
+    natsort($arr);
+
+    // var_dump($arr);
+
+    // return smallest value
+    return array_shift($arr);
   }
 
   public function computeConcavity($bend, $face1, $face2) {

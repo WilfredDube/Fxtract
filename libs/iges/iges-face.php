@@ -4,8 +4,10 @@ class Face {
 
   var $Face_ID;
   var $Bend_ID;
+  var $Dimension;
   var $Surface_Type;
   var $Surface_Pointer;
+  var $Thickness;
   var $External_Loop;
   var $Internal_Loop_Count;
   var $Internal_Loop; // ARRAY
@@ -21,7 +23,7 @@ class Face {
     self::$surface = new RBSplineSurface();
   }
 
-  public function facetract($dsection, $psection, $loops, $vertexlist, $edgeList) {
+  public function facetract($dsection, $psection, $loops, $vertexlist, $edgeList, $dim) {
     global $xtract;
     $counter = 0;
     $bend = 0;
@@ -63,11 +65,13 @@ class Face {
             $face->Surface_Type = "Plane Surface";
             $face->Face_ID = $counter;
             $face->Bend_ID = - 1;
+            $face->Dimension = $dim;
             $nfaces ++;
           } else {
             $face->Surface_Type = "Edge Side";
             $face->Face_ID = $counter;
             $face->Bend_ID = - 1;
+            $face->Dimension = $dim;
             $nfaces ++;
           }
         } else {
@@ -75,9 +79,20 @@ class Face {
           $face->Surface_Type = "Curved Surface";
           $face->Face_ID = - 1;
           $face->Bend_ID = $bend;
+          $face->Dimension = $dim;
         }
 
         $face->External_Loop = $loops [$ppentry_ploop];
+
+        if ($face->Surface_Type == "Plane Surface") {
+
+            // var_dump($face->External_Loop->Edge_List);
+            $fx = new Computation();
+            $face->Thickness = $fx->computeThickness($face->External_Loop->Edge_List);
+
+            // var_dump($face->Thickness);
+        }
+
         $this->face_list [$counter] = new Face ();
         $this->face_list [$counter] = $face;
         // $_SESSION['facelist'][$counter] = self::$face_list[$counter];
@@ -85,14 +100,34 @@ class Face {
       // var_dump($face);
         $i++;
       }
-
-
     }
 
+    $arra = array();
     if (isset ( $this->face_list ))
-     ;//var_dump($this->face_list);
+    foreach ($this->face_list as $value) {
+      if ($value->Surface_Type == "Plane Surface") {
+        $arra[] = round($value->Thickness, 2);
+      }
+    }
+    natsort($arra);
 
-    // self::$shell->createShell($vertexlist, $edgeList, $loops, self::$face_list);
+    // var_dump($arra);
+    $arra = array_shift($arra);
+
+    foreach ($this->face_list as $value) {
+      if ($value->Surface_Type == "Plane Surface") {
+        $value->Thickness = $arra;
+      }
+    }
+    //
+    // foreach ($this->face_list as $value) {
+    //   if ($value->Surface_Type == "Plane Surface") {
+    //     var_dump($value);
+    //   }
+    // }
+    // var_dump($this->face_list);
+
+    self::$shell->createShell($vertexlist, $edgeList, $loops, $this->face_list);
   }
 
   public function getFaceList() {
