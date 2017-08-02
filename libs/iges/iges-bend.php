@@ -8,6 +8,7 @@ class Bend {
   public $Face2;
   public $Angle;
   public $Bend_Loop;
+  public $Bend_Unit;
   public $Bend_Length;
   public $Bend_Thickness;
   public $Bend_Radius;

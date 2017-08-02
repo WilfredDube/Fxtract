@@ -107,6 +107,7 @@ CREATE TABLE `features` (
 `face2_id` INTEGER NOT NULL,
 `angle` INTEGER NOT NULL,
 `bend_loop_id` INTEGER NOT NULL,
+`bend_unit` varchar(10) NOT NULL,
 `bend_length` FLOAT NOT NULL,
 `bend_thickness` FLOAT NOT NULL,
 `bend_radius` FLOAT NOT NULL,
@@ -154,6 +155,6 @@ INSERT INTO `tstrength` (material, tensile_strength) VALUES ('Aluminum', 495);
 INSERT INTO `tstrength` (material, tensile_strength) VALUES ('Titanium Alloy', 1069);
 INSERT INTO `tstrength` (material, tensile_strength) VALUES ('Brass Annealed', 331);
 
-INSERT INTO `projects` (projectname, projectdescription, projectmaterialid, projectownerid, projectfileid )
-VALUES ('First', 'At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies.',
-1, 1, 1);
+-- INSERT INTO `projects` (projectname, projectdescription, projectmaterialid, projectownerid, projectfileid )
+-- VALUES ('First', 'At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies.',
+-- 1, 1, 1);

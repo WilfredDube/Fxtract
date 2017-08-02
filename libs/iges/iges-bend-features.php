@@ -12,6 +12,7 @@ class BendFeatures
 		"face2_id",
 		"angle",
 		"bend_loop_id",
+    "bend_unit",
 		"bend_length",
 		"bend_thickness",
 		"bend_radius",
@@ -27,6 +28,7 @@ class BendFeatures
   public $face2_id;
   public $angle;
   public $bend_loop_id;
+  public $bend_unit;
   public $bend_length;
   public $bend_thickness;
   public $bend_radius;
@@ -47,6 +49,7 @@ class BendFeatures
     $this->face2_id = $record->Face2;
     $this->angle = $record->Angle;
     $this->bend_loop_id  = $record->Bend_Loop;
+    $this->bend_unit = $record->Bend_Unit;
     $this->bend_length = $record->Bend_Length;
     $this->bend_thickness  = $record->Bend_Thickness;
     $this->bend_radius = $record->Bend_Radius;
@@ -133,6 +136,7 @@ class BendFeatures
   public function create()
   {
     global $database;
+    // echo "string";
     // Don't forget your SQL syntax and good habits:
     // - INSERT INTO table (key, key) VALUES ('value', 'value')
     // - single-quotes around all values
@@ -141,7 +145,7 @@ class BendFeatures
 
     $sql = "INSERT IGNORE INTO ".self::$table_name." (";
     $sql .= join(", ", array_keys($attributes));
-    $sql .= ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+    $sql .= ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     $params = array_values($attributes);
 
@@ -157,6 +161,8 @@ class BendFeatures
   public function update()
   {
     global $database;
+
+    // echo "string";
     // Don't forget your SQL syntax and good habits:
     // - UPDATE table SET key='value', key='value' WHERE condition
     // - single-quotes around all values
