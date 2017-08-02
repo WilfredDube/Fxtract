@@ -10,6 +10,8 @@ class Shell {
 	public $Name;
 	public $IGES_File;
 
+  private static $shell;
+
   function __construct () {
     $Loop_list = array();
     $Surface_List = array();
@@ -21,10 +23,12 @@ class Shell {
 		$this->Edge_List = $edgelist;
 		$this->Loop_List = $loops;
 		$this->Face_List = $face_list;
+
+    self::$shell = $this;
 	}
 
-  function getShell() {
-  	return $this;
+  public static function getShell() {
+  	return self::$shell;
   }
 }
 ?>
