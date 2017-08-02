@@ -86,8 +86,10 @@ $edgelist = $edge->edgetract($dsection, $psection, $edgetype, $vt);
 
 // var_dump($edgelist);
 //($edge->getEdgeList());
+$x = new Extract();
+$dim = $x->getDimensions($gsection);
 $loops = new Loop();
-$loops->looptract($dsection, $psection, $edge, $vtlist);
+$loops->looptract($dsection, $psection, $edge, $vtlist, $dim);
 
 // var_dump($loops);
 // var_dump($loops->getLoops());
@@ -95,8 +97,6 @@ $loops->looptract($dsection, $psection, $edge, $vtlist);
 $bends = new Bend();
 $bendz = $bends->bendTract($loops->getLoops());
 //
-$x = new Extract();
-$dim = $x->getDimensions($gsection);
 //
 $bends->insertBendFeatures($bendz, $dim);
 
