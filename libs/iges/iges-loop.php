@@ -19,7 +19,7 @@ class Loop {
   }
 
   // Extract loops
-  public function looptract($dsection, $psection, $edge, $vertexlist) {
+  public function looptract($dsection, $psection, $edge, $vertexlist, $dim) {
     global $xtract;
     static $p = 1;
 
@@ -94,7 +94,7 @@ class Loop {
 
     self::$face = new Face();
     // var_dump($edge->getEdgeList());
-    $rbsurface = self::$face->facetract($dsection, $psection, $this->loops, $vertexlist, $edge->getEdgeList());
+    $rbsurface = self::$face->facetract($dsection, $psection, $this->loops, $vertexlist, $edge->getEdgeList(), $dim);
 
     // var_dump($this->loops);
   }
