@@ -69,6 +69,9 @@ $temp = (unserialize($obj));
 print_r($temp);
 }*/
 $result = BendFeatures::find_feature_by_id($fileID);
+// foreach ($result as $row)
+//   break; 
+
 ?>
 
 <script src="assets/js/springy.js"></script>
@@ -85,7 +88,6 @@ $result = BendFeatures::find_feature_by_id($fileID);
      <b>Model Features</b>
   </h3>
 </div>
-
 <div class = "panel-body panel-body1">
 
   <!--<a id="expandButton" href="#">
@@ -208,11 +210,11 @@ data-dismiss="modal">&times;</button>
   <thead>
  <tr>
    <th>Bend ID</th>
-   <th>Radius<?php echo "(mm)"; ?></th>
-   <th>Thickness<?php echo "(mm)"; ?></th>
+   <th>Radius<?php echo "(".$row['bend_unit'].")"; ?></th>
+   <th>Thickness<?php echo "(".$row['bend_unit'].")"; ?></th>
    <th>Length<?php //echo "(".$unit.")"; ?></th>
    <th>Angle(Degrees)</th>
-   <th>Height<?php echo "(mm)"; ?></th>
+   <th>Height<?php echo "(".$row['bend_unit'].")"; ?></th>
    <th>Bending Force(N)</th>
  </tr>
 </thead>
