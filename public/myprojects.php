@@ -192,7 +192,7 @@ require('templates/header.php');
                   <div class=\"btn-group\" role=\"group\" aria-label=\"\">
                     <button type=\"button\" class=\"btn btn-default\" onclick=\"window.location.href='myprojectdetails.php?pid=".$row['projectid']."&mid=".$row['projectmaterialid']."'\"><span class=\"fa fa-eye\"></span></button>
                     <button type=\"button\" class=\"btn btn-default\" onclick=\"window.location.href='#'\"><span class=\"fa fa-edit\"></span></button>
-                    <button type=\"button\" class=\"btn btn-default\" onclick=\"window.location.href='?delete_id=".$row['projectid']."'\"><span class=\"fa fa-trash\"></span></button>
+                    <button type=\"button\" class=\"btn btn-default\" onclick=\"return ConfirmDelete()\"><span class=\"fa fa-trash\"></span></button>
                   </div>
                 </td>";
                 echo "</tr>";
@@ -214,6 +214,12 @@ $(document).ready(function(){
         $("#myModal").modal();
     });
 });
+
+function ConfirmDelete() {
+  var status = confirm("Are you sure you want to delete?");
+if(status)
+  window.location.href='<?php echo "?delete_id=".$row['projectid']; ?>';
+}
 </script>
 <?php
 //include header template
