@@ -5,17 +5,17 @@ class Loop {
   public $Loop_ID;
   public $Normal;
   public $Edge_Count;
-  public $Loop_Concavity;
+  // public $Loop_Concavity;
   public $Loop_Type;
   public $Edge_List; // ARRAY
-  public $Face_Pointers;
-  public $loops;
+  // public $Face_Pointers;
+  // public $loops;
 
   static $face;
 
   function __construct() {
     $this->Edge_List = array();
-    $this->loops = array();
+    // $this->loops = array();
   }
 
   // Extract loops
@@ -34,6 +34,12 @@ class Loop {
         ), $pentry );
 
         $edge504 = ($edge->getEdge504 ());
+
+        // foreach ($edge504 as $key) {
+        //   print_r($key);
+        //   echo "<br/><br/>";
+        // }
+
         $Edge_List = array ();
 
         $edgetuple = $arr [1];
@@ -81,27 +87,44 @@ class Loop {
           ++ $i;
         }
 
+        $fx = new Computation ( );
         if ($this->loops [$value->PointerData]->Loop_Type != "BEND" || $this->loops [$value->PointerData]->Loop_Type == null) {
           $this->loops [$value->PointerData]->Loop_Type = "FACE";
-          $fx = new Computation ( );
           $this->loops [$value->PointerData]->Normal = $fx->computeNormal ($this->loops [$value->PointerData]->Edge_List );
         } else
-        $this->loops [$value->PointerData]->Normal = "bend";
+        $this->loops [$value->PointerData]->Normal = $fx->computeNormal ($this->loops [$value->PointerData]->Edge_List );//"bend";
 
         $p ++;
       }
     }
 
+
+
     self::$face = new Face();
     // var_dump($edge->getEdgeList());
     $rbsurface = self::$face->facetract($dsection, $psection, $this->loops, $vertexlist, $edge->getEdgeList(), $dim);
 
+    // $this->displaystuff($this->loops);
     // var_dump($this->loops);
   }
 
   public function getLoops() {
     // var_dump(self::$face->getFaceList());
     return self::$face->getFaceList();
+  }
+
+
+  public function displaystuff($Arrr) {
+    $loopcnt = 0;
+    foreach ($Arrr as $key) {
+      // print_r($key);
+      // echo "<br/><br/>";
+      ++$loopcnt;
+    }
+
+    // echo "<br/><br/>";
+    // echo "<br/><br/>";
+    // echo $loopcnt;
   }
 }
 

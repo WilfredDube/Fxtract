@@ -50,6 +50,11 @@ class Computation {
   private function computeCrossProduct($a, $b) {
     $normal = new Vertex ();
 
+    // var_dump($a->z);
+    // echo "<br/>";
+    // print_r($b->z);
+    // echo "<br/>";
+
     $normal->x = ($a->y * $b->z) - ($a->z * $b->y);
     $normal->y = - (($a->x * $b->z) - ($b->x * $a->z));
     $normal->z = ($a->x * $b->y) - ($b->x * $a->y); /* */
@@ -67,12 +72,24 @@ class Computation {
     return $this->computeEuclideanNorm ( $a );
   }
 
+  public function computeLength($line) {
+    $a = new Vertex ();
+
+    $a->x = $line->Start_Vertex->x - $line->Terminate_Vertex->x;
+    $a->y = $line->Start_Vertex->y - $line->Terminate_Vertex->y;
+    $a->z = $line->Start_Vertex->z - $line->Terminate_Vertex->z;
+
+    return $this->computeEuclideanNorm ( $a );
+  }
 
   private function computeEuclideanNorm($vector) {
+    // print_r($vector);
+    // echo "<br/>";
     $A = $vector->x * $vector->x;
     $B = $vector->y * $vector->y;
     $C = $vector->z * $vector->z;
 
+    // echo ($A + $B + $C);
     return sqrt ( $A + $B + $C );
   }
 
@@ -82,6 +99,16 @@ class Computation {
     $C = $v1->z * $v2->z;
 
     return ($A + $B + $C);
+  }
+
+  public function distanceBTWPlanes($n1, $n2){
+    $num = ($n1->x)*($n2->x) + ($n1->y)*($n2->y) + ($n1->z)*($n2->z);
+    $den = $this->computeEuclideanNorm($n1);
+
+    // echo $num;
+    $distance = $num / $den;
+
+    return $distance;
   }
 
   public function computeAngle($normal1, $normal2) {
@@ -96,11 +123,35 @@ class Computation {
     else
 
     $cosine = $dotp / ($En1 * $En2);
+    // echo "Cossine = ".$cosine."<br/>";
     $radian = acos ( $cosine );
 
     $angle = rad2deg ( $radian );
 
-    return $angle;
+    return round($angle);
+  }
+
+  public function isSidePlane($edgelist, $thickness) {
+    $count = 0;
+
+    foreach ($edgelist as $edge) {
+      $length = $this->computeLength($edge);
+
+      if (abs(($length-$thickness)) < 0.00001){
+        ++$count;
+        // echo $length."  <br/>";
+        }
+      else {
+        // echo $length."  <br/>";
+      }
+    }
+    // echo "<br/>";
+    if ($count === 2) {
+      return TRUE;
+    }
+
+
+    return FALSE;
   }
 
   public function computeThickness($edgelist)
@@ -118,10 +169,276 @@ class Computation {
 
     natsort($arr);
 
+    // print_r($arr);
     // var_dump($arr);
-
+    // echo "<br><br>";
+    $thickness = array_shift($arr);
     // return smallest value
-    return array_shift($arr);
+    return $thickness;
+  }
+
+  public function computeParallel($n1, $n2){
+    $q  = $this->computeCrossProduct($n1, $n2);
+    $A  =  $this->computeAngle($n1, $n2);
+
+    $B = $this->computeEuclideanNorm ( $q );
+    // $A = round($A);
+    // if ($A == 0)
+    //   $A = 180;
+
+
+    // if ((abs((180 - $A)) < 0.00001) || $A == 180 || (abs((0 - $A)) < 0.00001) || $A == 0)
+    if (round($B) == 0){
+        // echo "Angle = ".$A." ";
+      return TRUE;
+    } else {
+      // echo "Angle = ".$A." ";
+      // echo $A." ";
+      return FALSE;
+    }
+  }
+
+  public function computeDistanceBTWPlanes($Plane1, $Plane2) {
+    $P1_vertex = $P2_vertex = array();
+    $distance1 = $distance2 = array();
+    // ->External_Loop->Normal
+
+    // echo "<br/><br/>";
+    // echo $Plane1->Face_ID." and ".$Plane2->Face_ID." <br/> ";
+
+    $normal1 = $Plane1->External_Loop->Normal;
+    $D1 = $Plane1->D_Element;
+
+    $normal2 = $Plane2->External_Loop->Normal;
+    $D2 = $Plane2->D_Element;
+    // print_r($normal1);
+    // echo "  D = ".$D1."<br/>";
+    // print_r($normal1);
+    // echo "  D = ".$D2."<br/>";
+    foreach ($Plane2->External_Loop->Edge_List as $value) {
+      $P1_vertex[] = $value->Start_Vertex;
+      $P1_vertex[] = $value->Terminate_Vertex;
+      // print_r($value->Start_Vertex);
+      // echo "<br/>";
+      // print_r($value->Terminate_Vertex);
+      // echo "<br/>";
+    }
+    // echo "<br/><BR/>";
+    // print_r($P1_vertex);
+
+    // Plane1 and vertex from Plane2
+    foreach ($P1_vertex as $edge) {
+      // var_dump($edge);
+      $num = (($normal1->x * $edge->x) + ($normal1->y * $edge->y) + ($normal1->z * $edge->z) + $D1);
+
+      // print_r($edge);
+      // echo "*****<br/>";
+      if ($num < 0)
+        $num = -$num;
+
+      $den =  sqrt(($normal1->x * $normal1->x) + ($normal1->y * $normal1->y) + ($normal1->z * $normal1->z));
+
+      $distance1 = abs($num / $den);
+
+      // echo "Num = ".$num. " and Den = ".$den."<br/>";
+      // print_r($distance1);
+    }
+    // echo "<br/><br/>";
+
+    foreach ($Plane1->External_Loop->Edge_List as $value) {
+      $P2_vertex[] = $value->Start_Vertex;
+      $P2_vertex[] = $value->Terminate_Vertex;
+      // print_r($value);
+      // echo "<br/>";
+    }
+
+
+    // Plane2 and vertex from Plane1
+    foreach ($P2_vertex as $edge) {
+      $num = -(($normal2->x * $edge->x) + ($normal2->y * $edge->y) + ($normal2->z * $edge->z) + $D2);
+
+            // print_r($edge);
+            // echo "=====<br/>";
+      if ($num < 0)
+        $num = -$num;
+
+      $den =  sqrt(($normal2->x * $normal2->x) + ($normal2->y * $normal2->y) + ($normal2->z * $normal2->z));
+
+      $distance2 = abs($num / $den);
+
+      // print_r($distance2);
+      // echo " ";
+    }
+    // print_r($distance2);
+    // if (($distance1 == $distance2))
+    //   echo "AAAAAAAAAAAAAAA";
+    // echo $Plane1->Face_ID." and ".$Plane2->Face_ID."  ";
+    // echo "Distance between planes = ".$distance1."  <br/>";
+    // echo "Distance between planes = ".$distance2."  <br/>";
+    // if (($distance1 == $distance2) && (abs(($distance1-$Plane1->Thickness)) < 0.00001))
+    if (abs(($distance2-$Plane1->Thickness)) < 0.00001) {
+
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  public function computeDistanceBTWPlaneVertices($Plane1, $Plane2) {
+    $distance1 = $distance2 = $count = 0;
+    $thickness = $Plane1->Thickness;
+
+    // echo $Plane1->Face_ID." and ".$Plane2->Face_ID." <br/> ";
+
+    $trimmedPlane1 = $this->computeTrimFace($Plane1->External_Loop->Edge_List);
+    $trimmedPlane2 = $this->computeTrimFace($Plane2->External_Loop->Edge_List);
+
+    foreach ($trimmedPlane1 as $key => $point1) {
+      foreach ($trimmedPlane2 as $key => $point2) {
+        $d = $this->distanceBTW2points($point1, $point2);
+        // echo $d.", ";
+        if (abs($d - $thickness) < 0.00001) {
+          ++$count;
+        }
+      }
+    }
+
+    // echo "<br/>";
+    if ($count == 4)
+      return true;
+
+    return false;
+  }
+
+  public function centreSurfaceGeneration($face) {
+      $distance1 = $distance2 = $count = 0;
+      $thickness = $face->Thickness;
+      $A = array();
+
+      // echo $Plane1->Face_ID." and ".$Plane2->Face_ID." <br/> ";
+      // echo "<br/>";
+      // echo "<br/>";
+      $trimmedPlane1 = $this->computeTrimFace($face->External_Loop->Edge_List);
+      $trimmedPlane2 = $this->computeTrimFace($face->Internal_Loop->Edge_List);
+
+      foreach ($trimmedPlane1 as $key => $point1) {
+        foreach ($trimmedPlane2 as $key1 => $point2) {
+          $d = $this->distanceBTW2points($point1, $point2);
+          // echo $d.", ";
+          if (abs($d - $thickness) < 0.00001) {
+            ++$count;
+            // $A[$key] = new Vertex();
+            $A[$key] = $this->midPoint($point1, $point2);
+            break;
+          }
+        }
+      }
+
+      // $face
+
+      // echo "<br/>";
+      if ($count == 4){
+        // foreach ($A as $key => $value) {
+        //   print_r(($value));
+        //   echo "<br/><br/>";
+        // }
+        // echo "******************************************<br/>";
+        return true;
+      }
+
+      return false;
+  }
+
+  public function midPoint($point1, $point2) {
+    $mid = new Vertex();
+
+    $mid->x = ($point1->x + $point2->x) / 2;
+    $mid->y = ($point1->y + $point2->y) / 2;
+    $mid->z = ($point1->z + $point2->z) / 2;
+
+    return $mid;
+  }
+
+  public function distanceBTW2points($point1, $point2) {
+    $sqr = $d = 0;
+    // if (($point1->x == $point2->x && $point1->y == $point2->y) ||
+    //     ($point1->z == $point2->z && $point1->y == $point2->y) ||
+    //     ($point1->x == $point2->x && $point1->z == $point2->z))
+
+    $a = ($point1->x - $point2->x);
+    $b = ($point1->y - $point2->y);
+    $c = ($point1->z - $point2->z);
+
+    $sqr = ($a * $a) + ($b * $b) + ($c * $c);
+    $d = sqrt($sqr);
+
+    return $d;
+  }
+
+  public function computerGradient($edge) {
+    $X = $edge->Start_Vertex->x - $edge->Terminate_Vertex->x;
+    $Y = $edge->Start_Vertex->y - $edge->Terminate_Vertex->y;
+    $Z = $edge->Start_Vertex->z - $edge->Terminate_Vertex->z;
+
+    $run = sqrt(($X * $X) + ($Y * $Y));
+    $rise = $Z;
+
+    // echo ", ";
+    $slope = $rise / $run;
+
+    return $slope;
+  }
+
+  public function computeTrimFace($Edge_List) {
+    $P2_vertex = array();
+
+    foreach ($Edge_List as $value) {
+      // echo $this->computerGradient($value)."<br/>";
+      // print_r($value);
+      // echo "<br/>";
+      // echo "<br/>";
+      $P1_vertex[] = $value->Start_Vertex;
+      $P1_vertex[] = $value->Terminate_Vertex;
+    }
+
+    // echo "<br/><br/>";
+    // echo $Plane2->Face_ID."<br/>";
+    // echo "<br/>";
+    // echo "<br/>";
+    $copyto = $P1_vertex;
+
+    $recopy = array();
+
+    // foreach ($copyto as $key => $values) {
+    //   print_r($values);echo "<br/>";
+    // }
+
+    // echo "<br/>";
+    // echo "<br/>";
+    $vl = array_shift($copyto);
+
+    foreach ($copyto as $key => $values) {
+      $keys = array_keys($copyto, $vl);
+
+      // print_r($keys);echo "<br/>";
+
+      $recopy[] = $vl;
+
+      foreach($keys as $key)
+        unset($copyto[$key]);
+
+      // foreach ($copyto as $key => $values) {
+      //   print_r($values);echo "<br/>";
+      // }
+
+      if (empty($copyto)){
+        // print_r(count($recopy));
+        break;
+      }
+
+      $vl = array_shift($copyto);
+    }
+
+    return $recopy;
   }
 
   public function computeConcavity($bend, $face1, $face2) {

@@ -1,6 +1,18 @@
-<!-- </div>< /.container --> 
+<!-- </div>< /.container -->
+<?php if (isset($_POST['process'])) {?>
+<div class="pull-right">
+    <footer class="footer" style="width:0px; bottom:20px; right:250px;">
+      <div class="container">
+        <!-- <p class="text-muted">Place sticky footer content here.</p> -->
 
-
+        <!-- <li class="dropdown"> -->
+         <button href="#" onclick="load_modal2()" class="btn btn-danger btn-lg" style="right:200px;">Generate Bend Sequence</button>
+        <!-- </li> -->
+      </div>
+    </footer>
+</div>
+<?php
+}?>
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster

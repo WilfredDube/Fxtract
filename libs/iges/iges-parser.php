@@ -22,13 +22,13 @@ class Parser {
     // echo "File : {$filename}\n\n";
   }
 
-  public function getPsection() {
-    return $this->psection;
-  }
-
-  public function getGsection() {
-    return $this->gsection;
-  }
+  // public function getPsection() {
+  //   return $this->psection;
+  // }
+  //
+  // public function getGsection() {
+  //   return $this->gsection;
+  // }
 
   // *****************************************Process The D section***********************************************//
   public function get_line() {
@@ -61,31 +61,31 @@ class Parser {
 
     return $count;
   }
-  public function read_iges_line() { /* read filerow from iges */
-    $i = 0;
-    $c = array ();
-    $s = "";
-
-    for($i = 0; $i < 80; ++ $i) {
-      $c [$i] = fgetc ( $this->_file );
-
-      echo $c [$i];
-      if ($i == 0) { /* eat CR LF in line beginning and reset "i" to zero */
-        switch ($c [$i]) {
-          case '\r' :
-          $i --;
-          break;
-          case '\n' :
-          $i --;
-          break;
-        }
-      }
-    }
-
-    $s = implode ( "", $c );
-
-    return $s;
-  }
+  // public function read_iges_line() { /* read filerow from iges */
+  //   $i = 0;
+  //   $c = array ();
+  //   $s = "";
+  //
+  //   for($i = 0; $i < 80; ++ $i) {
+  //     $c [$i] = fgetc ( $this->_file );
+  //
+  //     echo $c [$i];
+  //     if ($i == 0) { /* eat CR LF in line beginning and reset "i" to zero */
+  //       switch ($c [$i]) {
+  //         case '\r' :
+  //         $i --;
+  //         break;
+  //         case '\n' :
+  //         $i --;
+  //         break;
+  //       }
+  //     }
+  //   }
+  //
+  //   $s = implode ( "", $c );
+  //
+  //   return $s;
+  // }
   public function get_back() {
     rewind ( $this->_file );
   }
@@ -726,7 +726,7 @@ class Parser {
     return $count;
   }
 
-  public function jump_to_psection($s) {
+  private function jump_to_psection($s) {
     if ($s == null) {
       return null;
     }
@@ -751,20 +751,20 @@ class Parser {
     return $s;
   }
 
-  public function format_pd($input) {
-  }
-
-  public function print_pline() {
-    foreach ( $this->psection->psection as $value ) {
-      {
-        echo $value . "<br/><br/>";
-      }
-    }
-  }
-
-  public function file_destroy() {
-    fclose ( $this->_file );
-  }
+  // public function format_pd($input) {
+  // }
+  //
+  // public function print_pline() {
+  //   foreach ( $this->psection->psection as $value ) {
+  //     {
+  //       echo $value . "<br/><br/>";
+  //     }
+  //   }
+  // }
+  //
+  // public function file_destroy() {
+  //   fclose ( $this->_file );
+  // }
 
   /**
   * ***********************************************************************************************************

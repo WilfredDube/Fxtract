@@ -25,7 +25,7 @@
             }
 
             function load_modal2(){
-                    $('#myAFG').modal('show');
+                    $('#myMachines').modal('show');
             }
     </script>
     <style>
@@ -202,7 +202,7 @@ if (!$user->is_logged_in()) {
                           <li><a href="#">View Brep</a></li-->
                           <li>  <a href="#" onclick="load_modal()">Full Model Features</a></li>
               <li role="separator" class="divider"></li>
-              <li>  <a href="#" onclick="load_modal2()">Tool Selection</a></li>
+              <!-- <li>  <a href="#" onclick="load_modal2()">Tool Selection</a></li> -->
               <li role="separator" class="divider"></li>
                           <li>  <a href="#" onclick="load_modal2()">Face Adjacency Graph</a></li>
               <!--li role="separator" class="divider"></li>
@@ -211,6 +211,12 @@ if (!$user->is_logged_in()) {
               <li><a href="#">One more separated link</a></li-->
 
             </ul>
+<?php
+}?>
+<?php if (isset($_POST['process'])) {?>
+             <li class="dropdown">
+<a href="#" onclick="load_modal2()">Machines</a>
+</li>
 <?php
 }?>
 

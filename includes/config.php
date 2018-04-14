@@ -9,7 +9,7 @@ date_default_timezone_set ( 'Africa/Harare' );
 define ( 'DBHOST', 'localhost' );
 define ( 'DBUSER', 'root' );
 define ( 'DBPASS', 'password' );
-define ( 'DBNAME', 'fresh' );
+define ( 'DBNAME', 'FXtest' );
 
 // application address
 define ( 'DIR', 'http://localhost/' );

@@ -30,7 +30,7 @@ require_once(CLASS_PATH.DS.'database.php');
 require_once(CLASS_PATH.DS.'user.php');
 // require_once(CLASS_PATH.DS.'upload.php');
 require_once(CLASS_PATH.DS.'project.php');
-
+// require __DIR__ .'/vendor/autoload.php';
 // load basic functions next so that everything after can use them
 //require_once(LIB_PATH.DS.'functions.php');
 

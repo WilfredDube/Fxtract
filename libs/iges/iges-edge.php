@@ -23,6 +23,7 @@ class Edge {
   {
     global $xtract;
     $counter = 0;
+    $arccount = 0;
 
     $vertexlist = $vertex->getVertexList();
 
@@ -54,8 +55,12 @@ class Edge {
 
           if ($edgetype [$dsection [$pointer]->PointerData]->PROP3 == 1)
           $edg->Edge_Type = "Line";
-          else
+          else {
           $edg->Edge_Type = "Arc";
+          ++$arccount;
+          }
+
+
 
           $edg->Start_Vertex = new Vertex ();
           $edg->Start_Vertex = $vertexlist [$sindex]->Vertex;
@@ -86,8 +91,6 @@ class Edge {
             $v1->z = $edt->Control_Points [$c - 1];
           }
         }
-
-
       }
 
       if ($value->EntityType == 504) {
@@ -96,6 +99,8 @@ class Edge {
         $_SESSION ['edge504'] = self::$edge504;
       }
     }
+
+    // echo $arccount;
 
     return $_SESSION ['edgelist'];
   }

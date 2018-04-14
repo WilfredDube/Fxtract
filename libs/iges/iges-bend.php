@@ -48,7 +48,7 @@ class Bend {
           // echo $i."<br>";
           // var_dump($bedl);
           $i ++;
-
+          // echo $loop->Bend_ID." ";
           $bendE = $bedl;
 
           foreach ( $faces as $face ) {
@@ -56,10 +56,18 @@ class Bend {
               foreach ( $face->External_Loop->Edge_List as $fedl )
               if ($bendE == $fedl) {
                 $flag = true;
+
                 if ($face1 == null)
-                $face1 = $face;
+                  $face1 = $face;
                 else
-                $face2 = $face;
+                  $face2 = $face;
+
+                // print_r($face1->Face_ID);
+                // echo " ";
+                // if (isset($face2))
+                //   print_r($face2->Face_ID);
+                // echo "<br>";
+                // echo "<br>";
               } else
               continue;
             } else
@@ -79,6 +87,12 @@ class Bend {
           $angle = $fx->computeAngle ( $face1->External_Loop->Normal, $face2->External_Loop->Normal );
 
           $i = 0;
+
+          // print_r($face1->Face_ID);
+          // echo " ";
+          // print_r($face2->Face_ID);
+          // echo "<br>";
+          // echo "<br>";
 
           self::$bends [$p] = new Bend ();
           self::$bends [$p]->Bend_ID = $loop->Bend_ID;
@@ -139,8 +153,9 @@ class Bend {
         // echo $bend->Bend_Length." ,Thickness : ".$thick." ,Units : ".$unit." ,Tensile Strength :".$TS." ,Bend Force :".$force."\n";
 
         // TODO: Make feature unique
-        $featureid = $_SESSION['projectid']."".$_SESSION ['fileid'] . "" . $bend->Bend_ID . "" . $bend->Bend_Loop."";
-        $bend->Bend_ID .= trim ( $featureid );
+        // $featureid = $_SESSION['projectid']."".$_SESSION ['fileid'] . "" . $bend->Bend_ID . "" . $bend->Bend_Loop."";
+        // $bend->Bend_ID .= trim ( $featureid );
+        $bend->Bend_ID = "b".$bend->Bend_ID;
         $bend->Bend_height = $height;
         $bend->Bend_force = $force;
         $bend->Bend_Unit = $dim;
